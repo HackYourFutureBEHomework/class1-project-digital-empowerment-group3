@@ -1,31 +1,37 @@
 import React, { Component} from 'react';
 import { getModules } from '../api/modules';
-
+import {createModule }from '../api/modules ';
 class Modules extends Component {
   state = {
+    title:"",
     modules: []
   };
 
-  componentDidMount() {
+  componentDidMount =() => {
     getModules().then((modules) => {
       this.setState({ modules: modules });
     });
   }
+  handleSubmit =() => {
+    createModule(this.state.title)
+    then(newTitle => {
+      this.setState({
+        title:[..this.state.title.title,newTitle],
+      });
+    })
+  }
 
   render() {
-    const { modules } = this.state;
-
-    if (modules.length > 0) {
+    
       return (
-        <ul>
-          {modules.map((module) => <li key={module._id}>{module.title}</li>)}
-        </ul>
-      )
-    } else {
-      return (
-        <p>There are no modules yet</p>
-      )
-    }
+       <div>
+       <input type="text
+                       
+           value={this.state.title}
+           onChange={this.handleChange}/>
+           <button onClick={this.handleSubmit}add todo</button>
+       </div>
+             )
   }
 }
 
