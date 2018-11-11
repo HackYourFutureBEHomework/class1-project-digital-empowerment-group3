@@ -7,7 +7,7 @@ export const createModule =(title) => {
   return fetch (`${API_URL}module`,{
     method:'POST',
     headers:new Headers({
-      "Content-Type": äpplication/json"
+      "Content-Type": "application/json"
     }),
     body:JSON.stringify({
       title:title,
