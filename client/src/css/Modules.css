@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+.section-modules{
+    display: flex;
+    align-content: center;
+    padding: 5rem;
+    margin: 5rem;
+    border: solid rgb(172, 170, 170) 2px;
+    border-radius: 6px;
+    cursor: pointer;  
+}
+
+.btn-update{
+    border-radius: 5px;
+    background-color: black;
+    color:white;
+    cursor: pointer;
+}
+.btn-delete{
+    border-radius: 5px;
+    background-color: black;
+    color:white;
+    cursor: pointer;
+}
+.btn-onadd{
+    border-radius: 5px;
+    background-color: black;
+    color:white;
+    cursor: pointer;
+    margin-left: 88rem;
+    margin-top: 10rem; 
+}
+.input-addmodule{
+    margin-left: 5rem;
+    color:red;
+    border: black solid;
+}

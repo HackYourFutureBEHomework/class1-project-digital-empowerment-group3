@@ -2,11 +2,11 @@
 
 ## Checklist
 
-- [ ] I can fetch & display all modules
-- [ ] When I add a module it is saved in the database and added to the page
-- [ ] When I delete a module it is deleted in the database and deleted on the page
+- [x] I can fetch & display all modules
+- [x] When I add a module it is saved in the database and added to the page
+- [x] When I delete a module it is deleted in the database and deleted on the page
 - [ ] When I update a module it is updated in the database and updated on the page
-- [ ] Modules are displayed and styled well
+- [x] Modules are displayed and styled well
 - [ ] Only one module can be open at a time
 - [ ] I can progress through explanation, exercise, evaluation by clicking next
 - [ ] I can mark a module as completed

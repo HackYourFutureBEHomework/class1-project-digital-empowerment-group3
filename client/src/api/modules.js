@@ -15,3 +15,23 @@ export const createModule = (title) => {
     })
   }).then(response => response.json());
 };
+
+export const deleteModule = (id) => {
+  return fetch(`${API_URL}/module/${id}`, {
+    method: 'DELETE'
+  }).then(response => response.json());
+};
+
+export const updateModule = (id, title) => {
+  return fetch(`${API_URL}/module/${id}`, {
+    method: 'PATCH',
+    headers: new Headers({
+        "Content-Type": "application/json"
+      }),
+      title: title,
+  }).then(response => response.json());
+};
+
+
+
+

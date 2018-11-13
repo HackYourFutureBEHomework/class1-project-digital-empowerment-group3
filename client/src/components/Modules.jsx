@@ -1,10 +1,11 @@
 import React, { Component} from 'react';
-import { getModules } from '../api/modules';
-import { createModule } from '../api/modules';
+import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
+import "../css/Modules.css"
 class Modules extends Component {
   state = {
   title:"",
-  modules: []
+  modules: [],
+  // editModule:[]
 };
 
  componentDidMount = () => {
@@ -14,28 +15,50 @@ class Modules extends Component {
      });
   }
 
-  handleChange = (e) =>{
-    this.setState({title: e.target.value});
+  handleChange = (event) =>{
+    this.setState({title: event.target.value});
   }
-  handleSubmit = () => {
+
+  handleSubmit = (event) => {
       createModule(this.state.title)
-      .then(newTitle => {
+      .then(newModule => {
          this.setState({
-          title: [...this.state.title, newTitle],
+          modules: [...this.state.modules, newModule]
         });
-      })
+      });
+  }
+
+  handleDelete = (id) => {
+      const filteredModules = this.state.modules.filter(module => module._id !== id);
+      deleteModule(id);
+        this.setState({modules: filteredModules})
+  }
+
+  handleUpdate = () => {
+        updateModule(this.state.title, this.state.modules)
+           this.setState({
+             title: this.state.title,
+             modules: this.state.modules //GUYS I NEED SOME HELP HERE, I MANAGED TO DO THE PATCH
+           }); 
   }
   
   render() {
+    const { modules } = this.state;
      return(
         <div>
-        <input type="text" 
+        <input 
+            type="text" 
             value={this.state.title}
-            onChange={this.handleChange}/>
-            <button onClick={this.handleSubmit}>add todo</button>
+            onChange={this.handleChange}
+            className="input-addmodule"
+            />
+          <button className="btn-onadd" onClick={this.handleSubmit}>Add new module +</button>
+            {modules.map(module => <p className="section-modules" key={module._id}>
+            {module.title}
+            <button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>Update</button>
+            <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>)}
         </div>
      )
      }
 }
 export default Modules;
-
