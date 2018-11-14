@@ -2,14 +2,15 @@ import React, { Component} from 'react';
 import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
 import "../css/Modules.css";
 import Modal from "react-modal";
-
-
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css';
 class Modules extends Component {
   state = {
   title:"",
   modules: [],
   newEditedTitle: "",
-  isActive:false
+  isActive:false,
+  text:""
 };
 
  componentDidMount = () => {
@@ -54,25 +55,38 @@ class Modules extends Component {
         })
   }
 
+    handleTextChange = (value) => {
+    this.setState({ text: value })
+  }
+
   render() {
-    const { modules } = this.state;
+    const { modules, text } = this.state;
      return(
         <div>
-          
-            <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button> 
-             
-            <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol"><input 
-            placeholder="Add title"
-            type="text" 
-            value={this.state.title}
-            onChange={this.handleChange}
-            className="input-addmodule"/> 
+
+            <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button>
+
+            <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol">
+
+            <input 
+              placeholder="Add title"
+              type="text" 
+              value={this.state.title}
+              onChange={this.handleChange}
+              className="input-addmodule"/>
+
+            <ReactQuill value={this.state.text}
+              onChange={this.handleTextChange}/>
+              
             <button className="btn-onadd" onClick={this.handleSubmit}>Add new module +</button>
+
             </Modal>
+
             {modules.map(module => <p className="section-modules" key={module._id}>
             {module.title} 
             <button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>Update</button>
             <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>)}  
+            
         </div>
 
      )
