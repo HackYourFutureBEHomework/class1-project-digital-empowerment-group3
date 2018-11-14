@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Modules from './components/Modules';
 
-
 const App = () => (
   <BrowserRouter>
     <Switch>
