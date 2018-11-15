@@ -23,7 +23,7 @@ export const deleteModule = (id) => {
 };
 
 
-export const updateModule = (id, title) => {
+export const updateModule = (id) => {
   return fetch(`${API_URL}/module/${id}`, {
     method: 'PATCH',
     headers: new Headers({

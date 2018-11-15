@@ -1,63 +1,76 @@
-import React, { Component} from 'react';
-import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
+import React, { Component } from "react";
+import {
+  getModules,
+  createModule,
+  deleteModule,
+  updateModule
+} from "../api/modules";
 import "../css/Modules.css";
 import Modal from "react-modal";
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 class Modules extends Component {
   state = {
-  title:"",
-  modules: [],
-  newEditedTitle: "",
-  isActive:false,
-  text:""
-};
+    title: "",
+    modules: [],
+    loading: false,
+    edit: false,
+    newTitle: "",
+    active: null
+  };
 
- componentDidMount = () => {
-    getModules()
-    .then((modules) => {
-        this.setState({modules: modules});
-     });
-  }
+  componentDidMount = () => {
+    this.setState({ loading: true });
+    getModules().then(modules => {
+      this.setState({ modules: modules, loading: false });
+    });
+  };
 
-  handleChange = (event) =>{
-    this.setState({title: event.target.value});
-  }
+  handleTitle = event => {
+    this.setState({
+      title: event.target.value
+    });
+  };
 
-  handleSubmit = (event) => {
-      createModule(this.state.title)
-      .then(newModule => {
-         this.setState({
-          modules: [...this.state.modules, newModule],
-          
-        });
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    createModule(this.state.title).then(newModule => {
+      this.setState({
+        modules: [...this.state.modules, newModule],
+        title: "",
+        loading: false
       });
-  }
+    });
+  };
 
-  handleDelete = (id) => {
-      const filteredModules = this.state.modules.filter(module => module._id !== id);
-      deleteModule(id);
-        this.setState({modules: filteredModules})
-  }
+  handleDelete = id => {
+    deleteModule(id);
+    const filteredModules = this.state.modules.filter(
+      module => module._id !== id
+    );
+    this.setState({ modules: filteredModules });
+  };
 
-  handleUpdate = (idTitle) => {
-        updateModule(idTitle).then((updateModule) =>{
-          this.setState({
-            title: updateModule.title,
-            newEditedTitle: updateModule.title
-           });
-        }); 
-  }
+  handleTitleEdit = id => {
+    this.setState({ active: id, edit: !this.state.edit });
+  };
 
-  toggleModal = () => {
-        this.setState({
-          isActive:!this.state.isActive
-        })
-  }
+  handleUpdate = id => {
+    updateModule(id, this.state.newTitle).then(updatedModules => {
+      const modules = [...this.state.modules];
+      const index = modules.findIndex(x => x._id === id);
+      modules[index].title = updatedModules.title;
+      this.setState({
+        modules,
+        edit: false
+      });
+    });
+  };
 
-    handleTextChange = (value) => {
-    this.setState({ text: value })
-  }
+  handleTextChange = event => {
+    this.setState({ newTitle: event.target.value });
+  };
 
   render() {
     const { modules, text } = this.state;
@@ -96,5 +109,3 @@ export default Modules;
 
 
 // newModalOption: this.state.modules
-
-     

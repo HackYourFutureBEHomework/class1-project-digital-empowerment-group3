@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "mongoose": "^5.3.12",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
