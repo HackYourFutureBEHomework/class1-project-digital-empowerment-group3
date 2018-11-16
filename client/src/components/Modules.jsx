@@ -10,7 +10,8 @@ class Modules extends Component {
   modules: [],
   newEditedTitle: "",
   isActive:false,
-  text:""
+  text:"",
+  visibleModules: {}
 };
 
  componentDidMount = () => {
@@ -20,16 +21,15 @@ class Modules extends Component {
      });
   }
 
-  handleChange = (event) =>{
-    this.setState({title: event.target.value});
+  handleChange = (event) => {
+        this.setState({title: event.target.value});
   }
 
   handleSubmit = (event) => {
       createModule(this.state.title)
       .then(newModule => {
-         this.setState({
-          modules: [...this.state.modules, newModule],
-          
+        this.setState({
+          modules: [...this.state.modules, newModule],       
         });
       });
   }
@@ -42,7 +42,7 @@ class Modules extends Component {
 
   handleUpdate = (idTitle) => {
         updateModule(idTitle).then((updateModule) =>{
-          this.setState({
+        this.setState({
             title: updateModule.title,
             newEditedTitle: updateModule.title
            });
@@ -50,24 +50,23 @@ class Modules extends Component {
   }
 
   toggleModal = () => {
-        this.setState({
-          isActive:!this.state.isActive
-        })
+        this.setState({isActive:!this.state.isActive})
   }
 
     handleTextChange = (value) => {
-    this.setState({ text: value })
+        this.setState({ text: value });
   }
 
+    toggleModule = (id) => {
+         this.setState(prevState => ({visibleModules: {...prevState.visibleModules, [id]: !prevState.visibleModules[id]}}));
+    }
+
   render() {
-    const { modules, text } = this.state;
+    const { modules } = this.state;
      return(
-        <div>
-
-            <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button>
-
-            <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol">
-
+        <div>  
+          <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button>
+          <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol">
             <input 
               placeholder="Add title"
               type="text" 
@@ -77,24 +76,23 @@ class Modules extends Component {
 
             <ReactQuill value={this.state.text}
               onChange={this.handleTextChange}/>
-              
-            <button className="btn-onadd" onClick={this.handleSubmit}>Add new module +</button>
 
-            </Modal>
+            <button 
+              className="btn-onadd" 
+              onClick={this.handleSubmit}>Add new module +
+            </button>
+          </Modal>
 
-            {modules.map(module => <p className="section-modules" key={module._id}>
-            {module.title} 
-            <button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>Update</button>
-            <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>)}  
-            
+          {modules.map(module => 
+            <div onClick={this.toggleModule.bind(this, module._id)} 
+              key={module._id} className={`${!this.state.visibleModules[module._id] ? "section-modules" : "section-big-modules"}`}>
+                <p>{module.title} <button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>Update</button>
+              <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>
+            </div>)}                       
         </div>
-
      )
      }
 }
+
 export default Modules;
 
-
-// newModalOption: this.state.modules
-
-     

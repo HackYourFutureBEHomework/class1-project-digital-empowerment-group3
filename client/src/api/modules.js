@@ -29,7 +29,7 @@ export const updateModule = (id, title) => {
     headers: new Headers({
         "Content-Type": "application/json"
       }),
-      title: id,
+      title: title,
   }).then(response => response.json());
 };
 
