@@ -31,7 +31,8 @@ exports.destroy = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Module.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+  const { title } = req.body
+  Module.findOneAndUpdate({ _id: req.params.id }, {title}, { new: true })
     .then((data) => { res.send(data); })
     .catch((err) => {
       res.status(500).send({
