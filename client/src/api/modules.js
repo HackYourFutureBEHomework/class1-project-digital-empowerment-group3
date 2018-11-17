@@ -23,16 +23,12 @@ export const deleteModule = (id) => {
 };
 
 
-export const updateModule = (id) => {
+export const updateModule = (id, title) => {
   return fetch(`${API_URL}/module/${id}`, {
     method: 'PATCH',
     headers: new Headers({
         "Content-Type": "application/json"
       }),
-      title: id,
+      title: title,
   }).then(response => response.json());
 };
-
-
-
-

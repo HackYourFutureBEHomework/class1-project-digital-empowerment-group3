@@ -12,6 +12,16 @@ body{
     cursor: pointer;  
 }
 
+.section-big-modules{
+    display: flex;
+    align-content: center;
+    padding: 10rem;
+    margin: 5rem;
+    border: solid rgb(172, 170, 170) 2px;
+    border-radius: 6px;
+    cursor: pointer;  
+}
+
 .btn-update{
     border-radius: 5px;
     background-color: black;

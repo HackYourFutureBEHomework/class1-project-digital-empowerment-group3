@@ -1,86 +1,75 @@
-import React, { Component } from "react";
-import {
-  getModules,
-  createModule,
-  deleteModule,
-  updateModule
-} from "../api/modules";
+import React, { Component} from 'react';
+import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
 import "../css/Modules.css";
 import Modal from "react-modal";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css';
 class Modules extends Component {
   state = {
-    title: "",
-    modules: [],
-    loading: false,
-    edit: false,
-    newTitle: "",
-    active: null
-  };
+  title:"",
+  modules: [],
+  newEditedTitle: "",
+  isActive:false,
+  text:"",
+  visibleModules: {}
+};
 
-  componentDidMount = () => {
-    this.setState({ loading: true });
-    getModules().then(modules => {
-      this.setState({ modules: modules, loading: false });
-    });
-  };
+ componentDidMount = () => {
+    getModules()
+    .then((modules) => {
+        this.setState({modules: modules});
+     });
+  }
 
-  handleTitle = event => {
-    this.setState({
-      title: event.target.value
-    });
-  };
+  handleChange = (event) => {
+        this.setState({title: event.target.value});
+  }
 
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({ loading: true });
-    createModule(this.state.title).then(newModule => {
-      this.setState({
-        modules: [...this.state.modules, newModule],
-        title: "",
-        loading: false
+  handleSubmit = (event) => {
+      createModule(this.state.title)
+      .then(newModule => {
+        this.setState({
+          modules: [...this.state.modules, newModule],       
+        });
       });
-    });
-  };
+  }
 
-  handleDelete = id => {
-    deleteModule(id);
-    const filteredModules = this.state.modules.filter(
-      module => module._id !== id
-    );
-    this.setState({ modules: filteredModules });
-  };
+  handleDelete = (id) => {
+      const filteredModules = this.state.modules.filter(module => module._id !== id);
+      deleteModule(id);
+        this.setState({modules: filteredModules})
+  }
 
-  handleTitleEdit = id => {
-    this.setState({ active: id, edit: !this.state.edit });
-  };
-
-  handleUpdate = id => {
-    updateModule(id, this.state.newTitle).then(updatedModules => {
+  handleUpdate = (id) => {
+    updateModule(id, this.state.newTitle).then(editedModules => {
       const modules = [...this.state.modules];
-      const index = modules.findIndex(x => x._id === id);
-      modules[index].title = updatedModules.title;
+      const index = modules.findIndex((t) => t._id === id)
+      modules[index].title = editedModules.title
       this.setState({
         modules,
         edit: false
-      });
+        });
     });
   };
 
-  handleTextChange = event => {
-    this.setState({ newTitle: event.target.value });
-  };
+  toggleModal = () => {
+        this.setState({isActive:!this.state.isActive})
+  }
+
+    handleTextChange = (value) => {
+        this.setState({ text: value });
+  }
+
+    toggleModule = (id) => {
+         this.setState(prevState => ({visibleModules: {...prevState.visibleModules, [id]: !prevState.visibleModules[id]}}));
+    }
 
   render() {
-    const { modules, text } = this.state;
+    const { modules } = this.state;
      return(
-        <div>
-
-            <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button>
-
-            <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol">
-
+        <div>  
+          <button className="btn-toggle" onClick={this.toggleModal}>add new module +++</button>
+          <Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="I dont know whylol">
             <input 
               placeholder="Add title"
               type="text" 
@@ -90,22 +79,26 @@ class Modules extends Component {
 
             <ReactQuill value={this.state.text}
               onChange={this.handleTextChange}/>
-              
-            <button className="btn-onadd" onClick={this.handleSubmit}>Add new module +</button>
 
-            </Modal>
+            <button 
+              className="btn-onadd" 
+              onClick={this.handleSubmit}>Add new module +
+            </button>
+          </Modal>
 
-            {modules.map(module => <p className="section-modules" key={module._id}>
-            {module.title} 
-            <button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>Update</button>
-            <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>)}  
-            
+          {modules.map(module => 
+            <div onClick={this.toggleModule.bind(this, module._id)} 
+              key={module._id} className={`${!this.state.visibleModules[module._id] ? "section-modules" : "section-big-modules"}`}>
+                <p>{module.title}
+              <button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>delete</button></p>
+              <button className="btn-update"
+                      onClick={() => this.handleUpdate(module._id)}>
+                      Update
+                    </button>
+            </div>)}                       
         </div>
-
      )
      }
 }
+
 export default Modules;
-
-
-// newModalOption: this.state.modules
