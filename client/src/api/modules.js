@@ -4,7 +4,7 @@ export const getModules = () => {
   return fetch(`${API_URL}/module`).then(response => response.json());
 };
 
-export const createModule = (title) => {
+export const createModule = (title, explanation, exercise, evaluation) => {
   return fetch(`${API_URL}/module`, {
     method: 'POST',
     headers: new Headers({
@@ -12,6 +12,9 @@ export const createModule = (title) => {
       }),
     body: JSON.stringify({
       title: title,
+      explanation: explanation,
+      exercise: exercise,
+      evaluation: evaluation
     })
   }).then(response => response.json());
 };
@@ -22,17 +25,32 @@ export const deleteModule = (id) => {
   }).then(response => response.json());
 };
 
-
-export const updateModule = (id, title) => {
+export const updateModule = (id, title, explanation, exercise, evaluation) => {
   return fetch(`${API_URL}/module/${id}`, {
     method: 'PATCH',
     headers: new Headers({
         "Content-Type": "application/json"
       }),
       title: title,
+    body: JSON.stringify({ 
+      explanation : explanation,
+      exercise: exercise,
+      evaluation: evaluation 
+    })     
   }).then(response => response.json());
 };
 
+
+
+// export const updateModule = (module) => (
+//   fetch(`${API_URL}/module/${module._id}`, {
+//     method: 'PATCH',
+//     headers: new Headers({
+//         "Content-Type": "application/json"
+//       }),
+//     body: JSON.stringify(module)
+//   }).then(response => response.json())
+// );
 
 
 
