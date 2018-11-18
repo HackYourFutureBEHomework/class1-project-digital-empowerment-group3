@@ -31,11 +31,12 @@ exports.destroy = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Module.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-  .then((data) => { res.send(data); })
-  .catch((err) => {
-    res.status(500).send({
-      message: err.message
+  const { title, explanation, exercise, evaluation } = req.body
+  Module.findOneAndUpdate({ _id: req.params.id }, {title, explanation, exercise, evaluation }, { new: true })
+    .then((data) => { res.send(data); })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message
+      });
     });
-  });
 };
