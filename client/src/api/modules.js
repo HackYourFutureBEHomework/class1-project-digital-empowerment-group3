@@ -1,17 +1,33 @@
-const API_URL = 'http://localhost:4000'
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
-export const getModules = () => {
-  return fetch(`${API_URL}/module`).then(response => response.json());
-};
-export const createModule =(title) => {
-  return fetch (`${API_URL}module`,{
-    method:'POST',
-    headers:new Headers({
-      "Content-Type": "application/json"
-    }),
-    body:JSON.stringify({
-      title:title,
-    })
-  }).then(resopse =>response.json());
-};
+const headers = new Headers({
+  'Content-Type': 'application/json'
+});
 
+export const getModules = () => 
+  fetch(`${API_URL}/module`)
+  .then(response => 
+    response.json()
+    );
+    export const createModule = ( title, explanation,exercise,evaluation) => {
+      return fetch(`${API_URL}/module`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({title:title,explanation:explanation,exercise:exercise,evaluation:evaluation})
+      }).then(response => response.json());
+    };
+    
+
+export const updateModule = module => (
+  fetch(`${API_URL}/module/${module._id}`, {
+    method: 'PATCH',
+    headers,
+    body: JSON.stringify(module)
+  }).then(response => response.json())
+);
+
+export const deleteModule = id => 
+  fetch(`${API_URL}/module/${id}`, { 
+    method: 'DELETE', 
+    headers 
+  });
