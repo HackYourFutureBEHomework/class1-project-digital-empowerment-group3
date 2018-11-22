@@ -57,11 +57,10 @@ class Modules extends Component {
 			this.setState({
 				modules: [ ...this.state.modules, newModule ]
 			});
+      
 			this.setState({
 				isActive: !this.state.isActive
 			});
-		});
-	};
 
 	handleDelete = (id) => {
 		const filteredModules = this.state.modules.filter((module) => module._id !== id);
@@ -315,3 +314,4 @@ class Modules extends Component {
 }
 
 export default Modules;
+
