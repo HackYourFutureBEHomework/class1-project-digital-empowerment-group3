@@ -1,5 +1,4 @@
 const Module = require('../model/module.model');
-
 exports.findAll = (req, res) => {
   Module.find()
     .then((modules) => { res.send(modules); })
@@ -9,12 +8,30 @@ exports.findAll = (req, res) => {
       });
     });
 };
-exports.create=(req,res) => {
-  const newMoudle =new Module(req.body);
+exports.create = (req, res) => {
+  const newModule = new Module(req.body);
   newModule
-  save()
-  then((date)=>{res.send(data); })
-  catch((err) =>{
-    res.status(500).send({message:err.message });
+    .save()
+    .then((data) => { res.send(data); })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+exports.destroy = (req, res) => {
+  Module.findOneAndDelete({ _id: req.params.id })
+  .then((data) => { res.send(data); })
+  .catch((err) => {
+    res.status(500).send({
+      message: err.message
+    });
   });
+};
+exports.update = (req, res) => {
+    Module.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+    .then((data) => { res.send(data); })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message
+      });
+    });
 };
