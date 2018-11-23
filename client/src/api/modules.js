@@ -44,3 +44,4 @@ export const updateModule = (id, title, title2, title3, explanation, exercise, e
 		})
 	}).then((response) => response.json());
 };
+
