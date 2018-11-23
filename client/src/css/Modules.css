@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 body {
-	font-family: 'Ubuntu', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 .section-modules {
 	display: flex;
@@ -55,4 +55,53 @@ body {
 	cursor: pointer;
 	margin-left: 88rem;
 	margin-top: 10rem;
+}
+
+.hide {
+	display: none;
+}
+
+.fa-trash-alt {
+	margin-left: 2rem;
+	margin-right: 3rem;
+}
+
+.fa-edit {
+	margin-left: 76rem;
+	margin-bottom: 1rem;
+}
+
+.fa-plus-circle {
+	margin-left: 98rem;
+	margin-top: 10rem;
+	margin-bottom: 2rem;
+	cursor: pointer;
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	border-radius: 2px;
+}
+
+.newletter {
+	font-family: 'Roboto', sans-serif;
+}
+
+.modal1 {
+	background: rgb(211, 208, 208);
+	border-radius: 6px;
+	padding: 2rem;
+}
+
+.modal2 {
+	background: rgb(211, 208, 208);
+	padding: 2rem;
+	border-radius: 6px;
+}
+
+@font-face {
+	font-family: 'Roboto', sans-serif;
+	src: url('https://fonts.googleapis.com/css?family=Roboto');
 }

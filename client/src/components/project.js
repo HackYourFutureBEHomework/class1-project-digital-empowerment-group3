@@ -5,13 +5,9 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
-import 'react-accessible-accordion/dist/fancy-example.css';
-import { DragDropContainer, DropTarget } from 'react-drag-drop-container';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Draggable, Droppable } from 'react-drag-and-drop';
-import Dragula from 'react-dragula';
+import Panel from 'react-bootstrap/lib/Panel';
+import { PanelGroup } from 'react-bootstrap';
+
 class Modules extends Component {
 	state = {
 		title: '',
@@ -29,15 +25,19 @@ class Modules extends Component {
 		showTextEditorExercise: false,
 		showTextEditorEvaluation: false,
 		isLoading: true,
-		moduleActive: false
+		alertShown: false,
+		activeKey: '1'
 	};
 
 	componentDidMount = () => {
 		getModules().then((modules) => {
-			this.setState({ modules: modules, activeModuleId: modules.activeModuleId, isLoading: false });
+			this.setState({ modules: modules, isLoading: false });
 		});
 	};
 
+	handleSelect = (activeKey) => {
+		this.setState({ activeKey });
+	};
 	handleChangeTitle = (event) => {
 		this.setState({
 			title: event.target.value
@@ -66,6 +66,8 @@ class Modules extends Component {
 			this.setState({
 				modules: [ ...this.state.modules, newModule ]
 			});
+		});
+	};
 
 	handleDelete = (id) => {
 		const filteredModules = this.state.modules.filter((module) => module._id !== id);
@@ -105,12 +107,17 @@ class Modules extends Component {
 		});
 	};
 
-	toggleModule = (_id) => {
+	toggleModule = (id) => {
 		this.setState((prevState) => ({
-			visibleModules: { ...prevState.visibleModules, [_id]: !prevState.visibleModules[_id] }
+			visibleModules: { ...prevState.visibleModules, [id]: !prevState.visibleModules[id] }
 		}));
 	};
 
+	// toggleModule = () => {
+	// 	this.setState({
+	// 		isActive: !this.state.isActive
+	// 	});
+	// };
 	showAndHideExplanation = () => {
 		this.setState({
 			showTextEditorExplanation: true,
@@ -135,19 +142,9 @@ class Modules extends Component {
 		});
 	};
 
-	onDragEnd = (result) => {
-		console.log(result);
-	};
-
-	dragulaDecorator = (componentBackingInstance) => {
-		if (componentBackingInstance) {
-			let options = {};
-			Dragula([ componentBackingInstance ], options);
-		}
-	};
-
-	render(module) {
+	render() {
 		const { modules, isLoading } = this.state;
+
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -157,20 +154,33 @@ class Modules extends Component {
 				[ 'clean' ]
 			]
 		};
-
 		if (isLoading) return <p>isloading</p>;
 		return (
 			<div>
-				<i className="fas fa-plus-circle" onClick={this.toggleModal}>
-					<p className="newletter">add module</p>
-				</i>
-				<Modal
-					isOpen={this.state.isActive}
-					onRequestClose={this.toggleModal}
-					contentLabel="content..."
-					className="modal1"
-					visible={this.state.modalVisible}
+				<PanelGroup
+					accordion
+					id="accordion-controlled-example"
+					activeKey={this.state.activeKey}
+					onSelect={this.handleSelect}
 				>
+					<Panel eventKey="1">
+						<Panel.Heading>
+							<Panel.Title toggle>Panel heading 1</Panel.Title>
+						</Panel.Heading>
+						<Panel.Body collapsible>Panel content 1</Panel.Body>
+					</Panel>
+					<Panel eventKey="2">
+						<Panel.Heading>
+							<Panel.Title toggle>Panel heading 2</Panel.Title>
+						</Panel.Heading>
+						<Panel.Body collapsible>Panel content 2</Panel.Body>
+					</Panel>
+				</PanelGroup>
+				<button className="btn-toggle" onClick={this.toggleModal}>
+					add new module +++
+				</button>
+
+				<Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="content...">
 					{this.state.showTextEditorExplanation ? (
 						<span>
 							<input
@@ -235,73 +245,30 @@ class Modules extends Component {
 						Add new module
 					</button>
 				</Modal>
+
 				{modules.map((module) => (
-					<div className="container" onClick={this.toggleModule.bind(this, module._id)} key={module._id}>
-						<span className="card card-body mb-5">
-							<Accordion>
-								<AccordionItem>
-									<AccordionItemTitle>
-										<h3>{module.title}</h3>
-										<i onClick={this.toggleModal} className="far fa-edit" />
-										<i
-											onClick={this.handleDelete.bind(this, module._id)}
-											className="far fa-trash-alt"
-										/>
-										<input className="radio-btn" type="checkbox" name="vehicle2" value="Car" />
-									</AccordionItemTitle>
+					<div
+						onClick={this.toggleModule.bind(this, module._id)}
+						key={module._id}
+						className={!this.state.visibleModules[module._id] ? 'section-modules' : 'section-big-modules'}
+					>
+						tables
+						<p>{module.title} </p>
+						<span className="show">
+							<div dangerouslySetInnerHTML={{ __html: module.explanation }} />
+							<p>{module.title2}</p>
+							<div dangerouslySetInnerHTML={{ __html: module.exercise }} />
+							<p>{module.title3}</p>
+							<div dangerouslySetInnerHTML={{ __html: module.evaluation }} />
 
-									<AccordionItemBody>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title2}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.explanation }}
-													/>
-												</AccordionItemBody>
-												<AccordionItemBody />
-											</AccordionItem>
-										</Accordion>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title3}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.exercise }}
-													/>
-												</AccordionItemBody>
-											</AccordionItem>
-										</Accordion>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title3}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.evaluation }}
-													/>
-												</AccordionItemBody>
-											</AccordionItem>
-										</Accordion>
-									</AccordionItemBody>
-								</AccordionItem>
-							</Accordion>
+							<button className="btn-delete" onClick={this.handleDelete.bind(this, module._id)}>
+								delete
+							</button>
 						</span>
-
-						<Modal
-							isOpen={this.state.isActive}
-							onRequestClose={this.toggleModal}
-							contentLabel="content..."
-							className="modal2"
-						>
+						<button className="btn-toggle" onClick={this.toggleModal}>
+							update
+						</button>
+						<Modal isOpen={this.state.isActive} onRequestClose={this.toggleModal} contentLabel="content...">
 							{this.state.showTextEditorExplanation ? (
 								<span>
 									<input
@@ -377,4 +344,3 @@ class Modules extends Component {
 }
 
 export default Modules;
-
