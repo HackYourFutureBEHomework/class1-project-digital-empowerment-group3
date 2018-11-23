@@ -3,9 +3,9 @@
 ## Checklist
 
 
-- [ ] When I update a module it is updated in the database and updated on the page
+- [x] When I update a module it is updated in the database and updated on the page
 - [ ] Only one module can be open at a time
-- [ ] I can progress through explanation, exercise, evaluation by clicking next
+- [x] I can progress through explanation, exercise, evaluation by clicking next
 - [ ] When I mark a module as completed the next module opens
 
 **Check the user stories in the project brief!**
@@ -17,18 +17,18 @@
 - [x] When I delete a module it is deleted in the database and deleted on the page 
 - [x] Modules are displayed and styled well****low fidelity
 #Checklist.
- - [ ]I can add module contents (explanation, exercise, evaluation)
- - [ ]I can update module contents
+ - [x]I can add module contents (explanation, exercise, evaluation)
+ - [x]I can update module contents
  - [ ] I can mark a module as completed
  - [ ]When I click a module, its contents are shown
  Only one module can be open at a time -> when I click a module a currently open module should close
- - [ ]Adding and updating contents should be possible - using a WYSISWYG editor (I used react-quill)
+ - [x]Adding and updating contents should be possible - using a WYSISWYG editor (I used react-quill)
  WYSIWYG output should be styled correctly
- - [ ]I can progress through module stages by clicking next
+ - [x]I can progress through module stages by clicking next
  - [ ]I can mark a module as finished in the evaluation step, and the next module will open
 
 #Bonus
  - [ ]I can reorder modules by dragging them
- - [ ]A loader is displayed while I wait for a network request to finish
+ - [x]A loader is displayed while I wait for a network request to finish
  - [ ]Errors are shown when network requests fail
  - [ ]Errors are shown when the user supplies bad input
