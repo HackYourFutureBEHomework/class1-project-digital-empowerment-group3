@@ -35,8 +35,7 @@ class Modules extends Component {
 			showTextEditorExercise: false,
 			showTextEditorEvaluation: false,
 			isLoading: true,
-			moduleActive: false
-
+			moduleActive: false,
 	};
 	
 
@@ -77,6 +76,9 @@ class Modules extends Component {
 			this.setState({
 				isActive: !this.state.isActive
 			});
+			this.setState({
+				title: '',
+			})
 		});
 	};
 
@@ -166,13 +168,6 @@ class Modules extends Component {
 		});
 	  };
 
-	/*dragulaDecorator = (componentBackingInstance) => {
-		if (componentBackingInstance) {
-			let options = {};
-			Dragula([ componentBackingInstance ], options);
-		}
-	};*/
-
 	render(module) {
 		const { modules, isLoading } = this.state;
 		const editorOptions = {
@@ -204,7 +199,7 @@ class Modules extends Component {
 								placeholder="Add title"
 								type="text"
 								value={this.state.title}
-								onChange={(event) => this.handleChangeTitle(event)}
+								onChange={this.handleChangeTitle}
 								className="input-addmodule"
 							/>
 							explanation
@@ -261,9 +256,9 @@ class Modules extends Component {
 
 					<button onClick={this.showAndHideEvaluation}> evaluation</button>
 
-					<button className="btn-onadd" onClick={this.handleSubmit}>
+					<button type ="button" className="btn-onadd" onClick={this.handleSubmit} disabled={!this.state.title}> 
 						Add new module
-					</button>
+					</button> 
 				</Modal>
 				<DragDropContext onDragEnd={this.onDragEnd}>
 				<Droppable droppableId="droppable">
@@ -413,10 +408,11 @@ class Modules extends Component {
 
 							<button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>
 								Update
-							</button>
-							<button className="btn-onadd" onClick={this.handleSubmit}>
+							</button>						
+							<button className="btn-onadd" onClick={this.handleSubmit} disabled={!this.state.title}>
 								Add new module
 							</button>
+			
 						</Modal>
 					</div>
 					</div>
