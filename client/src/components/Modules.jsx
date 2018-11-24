@@ -7,30 +7,38 @@ import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
-import { DragDropContainer, DropTarget } from 'react-drag-drop-container';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Draggable, Droppable } from 'react-drag-and-drop';
-import Dragula from 'react-dragula';
+import { DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+
+const reorder = (list, startIndex, endIndex) => {
+	const result = Array.from(list);
+	const [removed] = result.splice(startIndex, 1);
+	result.splice(endIndex, 0, removed);
+  
+	return result;
+  };
+
 class Modules extends Component {
-	state = {
-		title: '',
-		title2: '',
-		title3: '',
-		modules: [],
-		isActive: false,
-		text: '',
-		visibleModules: {},
-		activeModuleId: undefined,
-		explanation: 'explanation',
-		exercise: 'exercise',
-		evaluation: 'evaluation',
-		showTextEditorExplanation: true,
-		showTextEditorExercise: false,
-		showTextEditorEvaluation: false,
-		isLoading: true,
-		moduleActive: false
+
+		state = {
+			title: '',
+			title2: '',
+			title3: '',
+			modules: [],
+			isActive: false,
+			text: '',
+			visibleModules: {},
+			activeModuleId: undefined,
+			explanation: 'explanation',
+			exercise: 'exercise',
+			evaluation: 'evaluation',
+			showTextEditorExplanation: true,
+			showTextEditorExercise: false,
+			showTextEditorEvaluation: false,
+			isLoading: true,
+			moduleActive: false
+
 	};
+	
 
 	componentDidMount = () => {
 		getModules().then((modules) => {
@@ -98,6 +106,9 @@ class Modules extends Component {
 			modules[index].evaluation = updatedModules.evaluation;
 			this.setState({ modules });
 		});
+		this.setState({
+			isActive: !this.state.isActive
+		});
 	};
 
 	toggleModal = () => {
@@ -140,15 +151,27 @@ class Modules extends Component {
 		});
 	};
 
-	onDragEnd = (result) => {
-		console.log(result);
-	};
-	dragulaDecorator = (componentBackingInstance) => {
+
+	onDragEnd = result => {
+		if (!result.destination) {
+		  return;
+		}
+		const modules = reorder(
+		  this.state.modules,
+		  result.source.index,
+		  result.destination.index
+		);
+		this.setState({
+		  modules
+		});
+	  };
+
+	/*dragulaDecorator = (componentBackingInstance) => {
 		if (componentBackingInstance) {
 			let options = {};
 			Dragula([ componentBackingInstance ], options);
 		}
-	};
+	};*/
 
 	render(module) {
 		const { modules, isLoading } = this.state;
@@ -242,7 +265,23 @@ class Modules extends Component {
 						Add new module
 					</button>
 				</Modal>
-				{modules.map((module) => (
+				<DragDropContext onDragEnd={this.onDragEnd}>
+				<Droppable droppableId="droppable">
+					{(provided) => (
+						<div ref={provided.innerRef}>
+				{modules.map((module, index) => (
+					<Draggable
+					key={module._id}
+					draggableId={module._id}
+					index={index}
+					className={
+						this.state.active === module._id ? "active" : null
+					}>
+					{(provided) => (
+						<div
+						ref={provided.innerRef}
+						{...provided.draggableProps}
+						{...provided.dragHandleProps}>
 					<div className="container" onClick={this.toggleModule.bind(this, module._id)} key={module._id}>
 						<span className="card card-body mb-5">
 							<Accordion>
@@ -380,7 +419,15 @@ class Modules extends Component {
 							</button>
 						</Modal>
 					</div>
+					</div>
+				)}
+				</Draggable>
 				))}
+				{provided.placeholder}
+				</div>
+				)}
+				</Droppable>
+				</DragDropContext>
 			</div>
 		);
 	};
