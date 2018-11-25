@@ -78,6 +78,7 @@ class Modules extends Component {
 			title: event.target.value
 		});
 	};
+
 	handleChangeTitleExercise = (event) => {
 		this.setState({
 			title2: event.target.value
@@ -86,6 +87,11 @@ class Modules extends Component {
 	handleChangeTitleEvaluation = (event) => {
 		this.setState({
 			title3: event.target.value
+		});
+	};
+	handleChangeTitle4 = (event) => {
+		this.setState({
+			title4: event.target.value
 		});
 	};
 
@@ -252,14 +258,21 @@ class Modules extends Component {
 											>
 												{this.state.showTextEditorExplanation ? (
 													<span>
-														explanation
 														<input
-															placeholder="Add title explanation"
+															placeholder="Edit module title"
 															type="text"
 															value={this.state.title}
 															onChange={(event) => this.handleChangeTitle(event)}
 															className="input-addmodule"
 														/>
+														<input
+															placeholder="Edit title explanation"
+															type="text"
+															value={this.state.title4}
+															onChange={(event) => this.handleChangeTitle4(event)}
+															className="input-addmodule"
+														/>
+														explanation
 														<ReactQuill
 															value={this.state.explanation}
 															modules={editorOptions}
@@ -336,7 +349,7 @@ class Modules extends Component {
 											<Accordion>
 												<AccordionItem>
 													<AccordionItemTitle>
-														<p className="list-group-item">{module.title2}</p>
+														<p className="list-group-item">{module.title4}</p>
 													</AccordionItemTitle>
 													<AccordionItemBody>
 														<div
@@ -352,7 +365,7 @@ class Modules extends Component {
 											<Accordion>
 												<AccordionItem>
 													<AccordionItemTitle>
-														<p className="list-group-item">{module.title3}</p>
+														<p className="list-group-item">{module.title2}</p>
 													</AccordionItemTitle>
 													<AccordionItemBody>
 														<div
@@ -399,7 +412,6 @@ class Modules extends Component {
 				>
 					{this.state.showTextEditorExplanation ? (
 						<span>
-							explanation
 							<input
 								placeholder="Add module-title"
 								type="text"
@@ -407,6 +419,14 @@ class Modules extends Component {
 								onChange={(event) => this.handleChangeTitle(event)}
 								className="input-addmodule"
 							/>
+							<input
+								placeholder="Add explanation-title"
+								type="text"
+								value={this.state.title4}
+								onChange={(event) => this.handleChangeTitle4(event)}
+								className="input-addmodule"
+							/>
+							explanation
 							<ReactQuill
 								value={this.state.explanation}
 								modules={editorOptions}
