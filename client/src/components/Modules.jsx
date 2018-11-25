@@ -7,16 +7,16 @@ import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
-import { DragDropContainer, DropTarget } from 'react-drag-drop-container';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Draggable, Droppable } from 'react-drag-and-drop';
-import Dragula from 'react-dragula';
+import hobo_1 from '../img/hobo_1.svg';
+import SearchInput, { createFilter } from 'react-search-input';
+
 class Modules extends Component {
 	state = {
 		title: '',
 		title2: '',
 		title3: '',
+		title4: '',
+		completed: false,
 		modules: [],
 		isActive: false,
 		text: '',
@@ -29,12 +29,47 @@ class Modules extends Component {
 		showTextEditorExercise: false,
 		showTextEditorEvaluation: false,
 		isLoading: true,
-		moduleActive: false
+		moduleActive: false,
+		defaultChecked: '',
+		selectedId: null,
+		bgColor: 'dcd7dd',
+		value: [],
+		valueSearch: ''
 	};
 
+	handleChangeSearch = (event) => {
+		const { valueSearch } = event.target;
+		this.setState({ valueSearch });
+	};
+
+	onChange1 = (e, i) => {
+		let value = this.state.value.slice();
+		value[i] = e.target.checked;
+		this.setState({ value });
+	};
+
+	unCheck1 = (i) => {
+		let value = this.state.value.slice();
+		value[i] = !value[i];
+		this.setState({ value });
+	};
+
+	handleClick = (selectedId) => {
+		this.setState({
+			selectedId,
+			bgColor: '#d6d1d1'
+		});
+	};
+
+	handleChangeCheckBox = () => {
+		const test = this.state.defaultChecked;
+		this.setState({
+			defaultChecked: !test
+		});
+	};
 	componentDidMount = () => {
 		getModules().then((modules) => {
-			this.setState({ modules: modules, activeModuleId: modules.activeModuleId, isLoading: false });
+			this.setState({ modules: modules, isLoading: false });
 		});
 	};
 
@@ -59,12 +94,25 @@ class Modules extends Component {
 			this.state.title,
 			this.state.title2,
 			this.state.title3,
+			this.state.title4,
 			this.state.explanation,
 			this.state.exercise,
 			this.state.evaluation
 		).then((newModule) => {
 			this.setState({
 				modules: [ ...this.state.modules, newModule ]
+			});
+			this.setState({
+				isActive: !this.state.isActive
+			});
+			this.setState({
+				title: '',
+				title2: '',
+				title3: '',
+				title4: '',
+				explanation: 'explanation',
+				exercise: 'exercise',
+				evaluation: 'evaluation'
 			});
 		});
 	};
@@ -81,19 +129,26 @@ class Modules extends Component {
 			this.state.title,
 			this.state.title2,
 			this.state.title3,
+			this.state.title4,
 			this.state.explanation,
 			this.state.exercise,
-			this.state.evaluation
+			this.state.evaluation,
+			this.state.completed
 		).then((updatedModules) => {
 			let modules = [ ...this.state.modules ];
 			const index = modules.findIndex((module) => module._id === moduleId);
 			modules[index].title = updatedModules.title;
 			modules[index].title2 = updatedModules.title2;
 			modules[index].title3 = updatedModules.title3;
+			modules[index].title4 = updatedModules.title4;
+			modules[index].completed = updatedModules.completed;
 			modules[index].explanation = updatedModules.explanation;
 			modules[index].exercise = updatedModules.exercise;
 			modules[index].evaluation = updatedModules.evaluation;
 			this.setState({ modules });
+			this.setState({
+				isActive: !this.state.isActive
+			});
 		});
 	};
 
@@ -107,10 +162,13 @@ class Modules extends Component {
 		});
 	};
 
-	toggleModule = (_id) => {
-		this.setState((prevState) => ({
-			visibleModules: { ...prevState.visibleModules, [_id]: !prevState.visibleModules[_id] }
-		}));
+	toggleModule = (id) => {
+		this.setState({
+			visibleModules: {
+				...this.state.visibleModules,
+				[id]: this.state.visibleModules[id]
+			}
+		});
 	};
 
 	showAndHideExplanation = () => {
@@ -137,19 +195,9 @@ class Modules extends Component {
 		});
 	};
 
-	onDragEnd = (result) => {
-		console.log(result);
-	};
-
-	dragulaDecorator = (componentBackingInstance) => {
-		if (componentBackingInstance) {
-			let options = {};
-			Dragula([ componentBackingInstance ], options);
-		}
-	};
-
 	render(module) {
-		const { modules, isLoading } = this.state;
+		const { modules, isLoading, defaultChecked } = this.state;
+
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -160,29 +208,205 @@ class Modules extends Component {
 			]
 		};
 
-		if (isLoading) return <p>isloading</p>;
+		if (isLoading) return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
 		return (
 			<div>
-				<i className="fas fa-plus-circle" onClick={this.toggleModal}>
-					<p className="newletter">add module</p>
-				</i>
+				<div className="navbar navbar-default navbar-fixed-top">
+					{' '}
+					<h2 className="navbar-title container">HOBO</h2>{' '}
+				</div>
+				<button className="new-add-module " onClick={this.toggleModal}>
+					Add module
+				</button>
+
+				{modules.map((module) => {
+					const isSuperActive = module._id === this.state.selectedId;
+					const display = isSuperActive ? 'block' : 'none';
+					let changeColor = isSuperActive ? 'red' : 'grey';
+					return (
+						<div className="container mt-5">
+							<div key={module._id} />
+							<span className="card card-body mb-5">
+								<Accordion onClick={() => this.handleClick(module._id)}>
+									<AccordionItem>
+										<AccordionItemTitle style={{ backgroundColor: this.state.bgColor }}>
+											<h3>{module.title}</h3>
+											<i onClick={this.toggleModal} className="far fa-edit" />
+											<i
+												onClick={this.handleDelete.bind(this, module._id)}
+												className="far fa-trash-alt"
+											/>
+
+											<input
+												className="radio-btn"
+												type="checkbox"
+												onChange={this.handleChangeCheckBox}
+												defaultChecked={false}
+											/>
+											<Modal
+												isOpen={this.state.isActive}
+												onRequestClose={this.toggleModal}
+												contentLabel="content..."
+												className="modal1"
+												closeTimeoutMS={200}
+											>
+												{this.state.showTextEditorExplanation ? (
+													<span>
+														explanation
+														<input
+															placeholder="Add title explanation"
+															type="text"
+															value={this.state.title}
+															onChange={(event) => this.handleChangeTitle(event)}
+															className="input-addmodule"
+														/>
+														<ReactQuill
+															value={this.state.explanation}
+															modules={editorOptions}
+															onChange={this.handleTextChange.bind(this, 'explanation')}
+														/>
+													</span>
+												) : null}
+
+												{this.state.showTextEditorExercise ? (
+													<span>
+														exercise
+														<input
+															placeholder="Add exercise title"
+															type="text"
+															value={this.state.title2}
+															onChange={(event) => this.handleChangeTitleExercise(event)}
+															className="input-addmodule"
+														/>
+														<ReactQuill
+															value={this.state.exercise}
+															modules={editorOptions}
+															onChange={this.handleTextChange.bind(this, 'exercise')}
+														/>
+													</span>
+												) : null}
+
+												{this.state.showTextEditorEvaluation ? (
+													<span>
+														evaluation
+														<input
+															placeholder="Add title evaluation"
+															type="text"
+															value={this.state.title3}
+															onChange={(event) =>
+																this.handleChangeTitleEvaluation(event)}
+															className="input-addmodule"
+														/>
+														<ReactQuill
+															value={this.state.evaluation}
+															modules={editorOptions}
+															onChange={this.handleTextChange.bind(this, 'evaluation')}
+														/>
+													</span>
+												) : null}
+
+												<button className="general-btn" onClick={this.showAndHideExplanation}>
+													{' '}
+													explanation
+												</button>
+
+												<button className="general-btn" onClick={this.showAndHideExercise}>
+													{' '}
+													exercise
+												</button>
+
+												<button className="general-btn" onClick={this.showAndHideEvaluation}>
+													{' '}
+													evaluation
+												</button>
+
+												<button
+													className="btn-update"
+													onClick={this.handleUpdate.bind(this, module._id)}
+												>
+													Update
+												</button>
+												<button className="btn-onadd" onClick={this.handleSubmit}>
+													Add new module
+												</button>
+											</Modal>
+										</AccordionItemTitle>
+
+										<AccordionItemBody style={{ display }}>
+											<Accordion>
+												<AccordionItem>
+													<AccordionItemTitle>
+														<p className="list-group-item">{module.title2}</p>
+													</AccordionItemTitle>
+													<AccordionItemBody>
+														<div
+															className="list-group"
+															dangerouslySetInnerHTML={{ __html: module.explanation }}
+														/>
+
+														<button className="general-btn">next</button>
+													</AccordionItemBody>
+													<AccordionItemBody />
+												</AccordionItem>
+											</Accordion>
+											<Accordion>
+												<AccordionItem>
+													<AccordionItemTitle>
+														<p className="list-group-item">{module.title3}</p>
+													</AccordionItemTitle>
+													<AccordionItemBody>
+														<div
+															className="list-group"
+															dangerouslySetInnerHTML={{ __html: module.exercise }}
+														/>
+
+														<button className="general-btn">next</button>
+													</AccordionItemBody>
+												</AccordionItem>
+											</Accordion>
+											<Accordion>
+												<AccordionItem>
+													<AccordionItemTitle>
+														<p className="list-group-item">{module.title3}</p>
+													</AccordionItemTitle>
+													<AccordionItemBody>
+														<div
+															className="list-group"
+															dangerouslySetInnerHTML={{ __html: module.evaluation }}
+														/>
+
+														<div>
+															<button className="general-btn">finish</button>
+														</div>
+													</AccordionItemBody>
+												</AccordionItem>
+											</Accordion>
+										</AccordionItemBody>
+									</AccordionItem>
+								</Accordion>
+							</span>
+						</div>
+					);
+				})}
+
 				<Modal
 					isOpen={this.state.isActive}
 					onRequestClose={this.toggleModal}
 					contentLabel="content..."
-					className="modal1"
+					className="modal2"
 					visible={this.state.modalVisible}
+					closeTimeoutMS={200}
 				>
 					{this.state.showTextEditorExplanation ? (
 						<span>
+							explanation
 							<input
-								placeholder="Add title"
+								placeholder="Add module-title"
 								type="text"
 								value={this.state.title}
 								onChange={(event) => this.handleChangeTitle(event)}
 								className="input-addmodule"
 							/>
-							explanation
 							<ReactQuill
 								value={this.state.explanation}
 								modules={editorOptions}
@@ -193,14 +417,14 @@ class Modules extends Component {
 
 					{this.state.showTextEditorExercise ? (
 						<span>
+							exercise
 							<input
-								placeholder="Add title"
+								placeholder="Add exercise title"
 								type="text"
 								value={this.state.title2}
 								onChange={(event) => this.handleChangeTitleExercise(event)}
 								className="input-addmodule"
 							/>
-							exercise
 							<ReactQuill
 								value={this.state.exercise}
 								modules={editorOptions}
@@ -211,14 +435,14 @@ class Modules extends Component {
 
 					{this.state.showTextEditorEvaluation ? (
 						<span>
+							evaluation
 							<input
-								placeholder="Add title"
+								placeholder="Add evaluation title"
 								type="text"
 								value={this.state.title3}
 								onChange={(event) => this.handleChangeTitleEvaluation(event)}
 								className="input-addmodule"
 							/>
-							evaluation
 							<ReactQuill
 								value={this.state.evaluation}
 								modules={editorOptions}
@@ -227,152 +451,25 @@ class Modules extends Component {
 						</span>
 					) : null}
 
-					<button onClick={this.showAndHideExplanation}> explanation</button>
+					<button className="general-btn" onClick={this.showAndHideExplanation}>
+						{' '}
+						explanation
+					</button>
 
-					<button onClick={this.showAndHideExercise}> exercise</button>
+					<button className="general-btn" onClick={this.showAndHideExercise}>
+						{' '}
+						exercise
+					</button>
 
-					<button onClick={this.showAndHideEvaluation}> evaluation</button>
+					<button className="general-btn" onClick={this.showAndHideEvaluation}>
+						{' '}
+						evaluation
+					</button>
 
 					<button className="btn-onadd" onClick={this.handleSubmit}>
 						Add new module
 					</button>
 				</Modal>
-				{modules.map((module) => (
-					<div className="container" onClick={this.toggleModule.bind(this, module._id)} key={module._id}>
-						<span className="card card-body mb-5">
-							<Accordion>
-								<AccordionItem>
-									<AccordionItemTitle>
-										<h3>{module.title}</h3>
-										<i onClick={this.toggleModal} className="far fa-edit" />
-										<i
-											onClick={this.handleDelete.bind(this, module._id)}
-											className="far fa-trash-alt"
-										/>
-										<input className="radio-btn" type="checkbox" name="vehicle2" value="Car" />
-									</AccordionItemTitle>
-
-									<AccordionItemBody>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title2}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.explanation }}
-													/>
-												</AccordionItemBody>
-												<AccordionItemBody />
-											</AccordionItem>
-										</Accordion>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title3}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.exercise }}
-													/>
-												</AccordionItemBody>
-											</AccordionItem>
-										</Accordion>
-										<Accordion>
-											<AccordionItem>
-												<AccordionItemTitle>
-													<p className="list-group-item">{module.title3}</p>
-												</AccordionItemTitle>
-												<AccordionItemBody>
-													<div
-														className="list-group"
-														dangerouslySetInnerHTML={{ __html: module.evaluation }}
-													/>
-												</AccordionItemBody>
-											</AccordionItem>
-										</Accordion>
-									</AccordionItemBody>
-								</AccordionItem>
-							</Accordion>
-						</span>
-
-						<Modal
-							isOpen={this.state.isActive}
-							onRequestClose={this.toggleModal}
-							contentLabel="content..."
-							className="modal2"
-						>
-							{this.state.showTextEditorExplanation ? (
-								<span>
-									<input
-										placeholder="Add title"
-										type="text"
-										value={this.state.title}
-										onChange={(event) => this.handleChangeTitle(event)}
-										className="input-addmodule"
-									/>
-									explanation
-									<ReactQuill
-										value={this.state.explanation}
-										modules={editorOptions}
-										onChange={this.handleTextChange.bind(this, 'explanation')}
-									/>
-								</span>
-							) : null}
-
-							{this.state.showTextEditorExercise ? (
-								<span>
-									<input
-										placeholder="Add title"
-										type="text"
-										value={this.state.title2}
-										onChange={(event) => this.handleChangeTitleExercise(event)}
-										className="input-addmodule"
-									/>
-									exercise
-									<ReactQuill
-										value={this.state.exercise}
-										modules={editorOptions}
-										onChange={this.handleTextChange.bind(this, 'exercise')}
-									/>
-								</span>
-							) : null}
-
-							{this.state.showTextEditorEvaluation ? (
-								<span>
-									<input
-										placeholder="Add title"
-										type="text"
-										value={this.state.title3}
-										onChange={(event) => this.handleChangeTitleEvaluation(event)}
-										className="input-addmodule"
-									/>
-									evaluation
-									<ReactQuill
-										value={this.state.evaluation}
-										modules={editorOptions}
-										onChange={this.handleTextChange.bind(this, 'evaluation')}
-									/>
-								</span>
-							) : null}
-
-							<button onClick={this.showAndHideExplanation}> explanation</button>
-
-							<button onClick={this.showAndHideExercise}> exercise</button>
-
-							<button onClick={this.showAndHideEvaluation}> evaluation</button>
-
-							<button className="btn-update" onClick={this.handleUpdate.bind(this, module._id)}>
-								Update
-							</button>
-							<button className="btn-onadd" onClick={this.handleSubmit}>
-								Add new module
-							</button>
-						</Modal>
-					</div>
-				))}
 			</div>
 		);
 	}

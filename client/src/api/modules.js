@@ -4,7 +4,7 @@ export const getModules = () => {
 	return fetch(`${API_URL}/module`).then((response) => response.json());
 };
 
-export const createModule = (title, title2, title3, explanation, exercise, evaluation) => {
+export const createModule = (title, title2, title3, title4, explanation, exercise, evaluation, completed) => {
 	return fetch(`${API_URL}/module`, {
 		method: 'POST',
 		headers: new Headers({
@@ -15,9 +15,11 @@ export const createModule = (title, title2, title3, explanation, exercise, evalu
 			title: title,
 			title2: title2,
 			title3: title3,
+			title4: title4,
 			explanation: explanation,
 			exercise: exercise,
-			evaluation: evaluation
+			evaluation: evaluation,
+			completed: completed
 		})
 	}).then((response) => response.json());
 };
@@ -28,7 +30,7 @@ export const deleteModule = (id) => {
 	}).then((response) => response.json());
 };
 
-export const updateModule = (id, title, title2, title3, explanation, exercise, evaluation) => {
+export const updateModule = (id, title, title2, title3, title4, explanation, exercise, evaluation, completed) => {
 	return fetch(`${API_URL}/module/${id}`, {
 		method: 'PATCH',
 		headers: new Headers({
@@ -40,7 +42,8 @@ export const updateModule = (id, title, title2, title3, explanation, exercise, e
 			title3: title3,
 			explanation: explanation,
 			exercise: exercise,
-			evaluation: evaluation
+			evaluation: evaluation,
+			completed: completed
 		})
 	}).then((response) => response.json());
 };

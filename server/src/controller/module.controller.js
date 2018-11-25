@@ -37,10 +37,10 @@ exports.destroy = (req, res) => {
 };
 
 exports.update = (req, res) => {
-	const { title, title2, title3, explanation, exercise, evaluation } = req.body;
+	const { title, title2, title3, title4, explanation, exercise, evaluation } = req.body;
 	Module.findOneAndUpdate(
 		{ _id: req.params.id },
-		{ title, title2, title3, explanation, exercise, evaluation },
+		{ title, title2, title3, title4, explanation, exercise, evaluation },
 		{ new: true }
 	)
 		.then((data) => {

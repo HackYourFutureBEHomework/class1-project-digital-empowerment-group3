@@ -8,9 +8,14 @@ const ModuleSchema = mongoose.Schema(
 		},
 		title2: String,
 		title3: String,
+		title4: String,
 		explanation: String,
 		exercise: String,
-		evaluation: String
+		evaluation: String,
+		completed: {
+			type: Boolean,
+			default: false
+		}
 	},
 	{
 		timestamps: true
