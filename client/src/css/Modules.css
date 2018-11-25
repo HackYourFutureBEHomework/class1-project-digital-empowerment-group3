@@ -1,33 +1,52 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 body {
-	font-family: 'Ubuntu', sans-serif;
-}
-.section-modules {
-	display: flex;
-	align-content: center;
-	padding: 5rem;
-	margin: 5rem;
-	border: solid rgb(172, 170, 170) 2px;
-	border-radius: 6px;
-	cursor: pointer;
-
+	font-family: 'Roboto', sans-serif;
 }
 
-.section-big-modules {
-	display: flex;
-	align-content: center;
-	padding: 10rem;
-	margin: 5rem;
-	border: solid rgb(172, 170, 170) 2px;
+.new-add-module {
 	border-radius: 6px;
+	border: solid 1px red;
+	background-color: #fff;
+	color: rgb(114, 113, 113);
+	padding: 1rem;
 	cursor: pointer;
+	margin-left: 114rem;
+	margin-top: 13rem;
+}
+.new-add-module:hover {
+	background-color: red;
+	color: #fff;
+}
+.general-btn {
+	cursor: pointer;
+	margin-left: 1rem;
+	margin-top: 2rem;
+	border-radius: 6px;
+	padding: 0.5rem;
+	border: solid 1px red;
+	color: rgb(114, 113, 113);
+}
+.general-btn:focus {
+	outline: none;
+}
+.general-btn:hover {
+	background-color: red;
+	color: #fff;
 }
 
 .btn-update {
-	border-radius: 5px;
-	background-color: black;
-	color: white;
+	border-radius: 6px;
+	border: solid 1px red;
+	background-color: #fff;
+	color: rgb(114, 113, 113);
+	padding: 1rem;
 	cursor: pointer;
+	margin-left: 9rem;
+	margin-top: 2rem;
+}
+.btn-update:hover {
+	background-color: red;
+	color: #fff;
 }
 .btn-delete {
 	border-radius: 5px;
@@ -37,15 +56,25 @@ body {
 }
 .btn-onadd {
 	border-radius: 5px;
-	background-color: black;
-	color: white;
+	background-color: rgb(255, 255, 255);
+	color: rgb(114, 113, 113);
+	border: red solid 1px;
+	padding: 5px;
 	cursor: pointer;
 	margin-left: 15rem;
 	margin-top: 10rem;
 }
+.btn-onadd:hover {
+	background-color: red;
+	color: #fff;
+}
 .input-addmodule {
 	margin-left: 5rem;
-	border: black solid;
+	border: red solid 1px;
+	margin-bottom: 2rem;
+	margin-right: 2rem;
+	border-radius: 5px;
+	padding: 10px;
 }
 
 .btn-toggle {
@@ -55,4 +84,170 @@ body {
 	cursor: pointer;
 	margin-left: 88rem;
 	margin-top: 10rem;
+}
+
+.hide {
+	display: none;
+}
+
+.fa-trash-alt {
+	margin-left: 2rem;
+	margin-right: 3rem;
+}
+
+.fa-edit {
+	margin-left: 76rem;
+	margin-bottom: 1rem;
+}
+
+.fa-plus-circle {
+	margin-left: 98rem;
+	margin-top: 10rem;
+	margin-bottom: 2rem;
+	cursor: pointer;
+}
+.ReactModalPortal > div {
+	opacity: 0;
+}
+.ReactModalPortal .ReactModal__Overlay {
+	transition: opacity 600ms ease-in-out;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	border-radius: 6px;
+}
+.ReactModalPortal .ReactModal__Overlay--after-open {
+	opacity: 1;
+}
+
+.ReactModalPortal .ReactModal__Overlay--before-close {
+	opacity: 0;
+}
+
+.modal1 {
+	background: rgb(255, 255, 255);
+	border-radius: 6px;
+	padding: 18px;
+	max-width: 50rem;
+	border: solid 1px rgb(210, 196, 196);
+}
+
+.modal2 {
+	background: rgb(255, 255, 255);
+	padding: 18px;
+	border-radius: 6px;
+	max-width: 50rem;
+	border: solid 1px rgb(210, 196, 196);
+}
+.navbar {
+	background: red;
+	color: #fff;
+	padding: 5rem;
+	height: 6rem;
+
+	overflow: hidden;
+}
+.navbar-title {
+	margin-left: 4rem;
+}
+.body-accordion {
+	display: none;
+}
+
+.none-body {
+	display: block;
+}
+
+.hobo-logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	margin-top: 30rem;
+	animation: hobo 1.5s infinite ease-in-out;
+	padding: 12px;
+	height: 20rem;
+	width: 20rem;
+
+	border-radius: 190px;
+}
+@keyframes hobo {
+	0% {
+		background: rgb(252, 252, 252);
+	}
+	25% {
+		background: rgb(255, 0, 4);
+	}
+	50% {
+		background: rgb(213, 89, 61);
+	}
+	75% {
+		background: rgb(254, 255, 255);
+	}
+	100% {
+		background: rgb(255, 25, 0);
+	}
+}
+
+@media screen and (max-width: 1262px) {
+	.new-add-module {
+		border-radius: 6px;
+		border: solid 1px red;
+		background-color: #fff;
+		color: rgb(114, 113, 113);
+		padding: 1rem;
+		cursor: pointer;
+		margin-left: 80rem;
+		margin-top: 13rem;
+	}
+}
+
+@media screen and (max-width: 993px) {
+	.new-add-module {
+		border-radius: 6px;
+		border: solid 1px red;
+		background-color: #fff;
+		color: rgb(114, 113, 113);
+		padding: 1rem;
+		cursor: pointer;
+		margin-left: 50rem;
+		margin-top: 13rem;
+	}
+	.fa-edit {
+		margin-left: 8rem;
+		margin-bottom: 1rem;
+	}
+}
+
+@media screen and (max-width: 615px) {
+	.new-add-module {
+		border-radius: 6px;
+		border: solid 1px red;
+		background-color: #fff;
+		color: rgb(114, 113, 113);
+		padding: 1rem;
+		cursor: pointer;
+		margin-left: 30rem;
+		margin-top: 13rem;
+	}
+	.fa-edit {
+		margin-left: 18rem;
+		margin-bottom: 1rem;
+	}
+}
+@media screen and (max-width: 417px) {
+	.new-add-module {
+		border-radius: 6px;
+		border: solid 1px red;
+		background-color: #fff;
+		color: rgb(114, 113, 113);
+		padding: 1rem;
+		cursor: pointer;
+		margin-left: 25rem;
+		margin-top: 13rem;
+	}
+	.fa-edit {
+		margin-left: 5rem;
+		margin-bottom: 1rem;
+	}
 }
