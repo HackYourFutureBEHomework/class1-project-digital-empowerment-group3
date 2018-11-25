@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
 import { DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
-import {hobo_1} from '../img/hobo_1.svg';
+import hobo_1 from '../img/hobo_1.svg';
 //import SearchInput, { createFilter } from 'react-search-input';
 
 const reorder = (list, startIndex, endIndex) => {
@@ -240,7 +240,7 @@ const reorder = (list, startIndex, endIndex) => {
 			]
 		};
 
-		if (isLoading)  return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
+		if (isLoading)  return <img className="hobo-logo" src={hobo_1} width="100" height="50" alt="hobo_1"/>;
 		return  (
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
@@ -280,8 +280,9 @@ const reorder = (list, startIndex, endIndex) => {
 										<AccordionItemTitle style={{ backgroundColor: this.state.bgColor }}>
 											<h3>{module.title}</h3>
 											<i onClick={this.toggleModal} className="far fa-edit" />
-											<i
-												onClick={this.handleDelete.bind(this, module._id)}
+											<i onClick={ () => {
+													this.handleDelete(module._id)
+												}}
 												className="far fa-trash-alt"
 											/>
 
