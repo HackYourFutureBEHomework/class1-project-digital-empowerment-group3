@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
 import { DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
-//import hobo_1 from '../img/hobo_1.svg';
+import {hobo_1} from '../img/hobo_1.svg';
 //import SearchInput, { createFilter } from 'react-search-input';
 
 const reorder = (list, startIndex, endIndex) => {
@@ -229,7 +229,7 @@ const reorder = (list, startIndex, endIndex) => {
 	  };
 
 	render(module) {
-		const { modules, isLoading, defaultChecked } = this.state;
+		const { modules, isLoading } = this.state;
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -240,7 +240,7 @@ const reorder = (list, startIndex, endIndex) => {
 			]
 		};
 
-		if (isLoading)  return <p>loading</p>;
+		if (isLoading)  return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
 		return  (
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
