@@ -7,12 +7,14 @@ require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(process.env.MONGODB_URL, { useNewUrlParser: true })
-  .then(() => { console.log('Database connection established'); })
-  .catch((err) => {
-    console.error(`Database error, exiting. Stack trace:\n${err}`);
-    process.exit();
-  });
+	.connect(process.env.MONGODB_URL, { useNewUrlParser: true })
+	.then(() => {
+		console.log('Database connection established');
+	})
+	.catch((err) => {
+		console.error(`Database error, exiting. Stack trace:\n${err}`);
+		process.exit();
+	});
 
 const app = express();
 
@@ -21,17 +23,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'API ready' });
+	res.json({ message: 'API ready' });
+});
+app.get('/paths', (req, res) => {
+	res.json({ message: 'WELCOME TO PATHS PAGE' });
 });
 
-
-
-
 require('./src/route/module.route')(app);
-
-
+require('./src/route/paths.route')(app);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+	console.log(`Server running on port ${port}`);
 });
