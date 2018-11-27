@@ -9,7 +9,7 @@ import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 
 import 'react-accessible-accordion/dist/fancy-example.css';
 import { DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import hobo_1 from '../img/hobo_1.svg';
-//import SearchInput, { createFilter } from 'react-search-input';
+//import SearchInput, {createFilter} from 'react-search-input'
 
 const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
@@ -43,7 +43,7 @@ const reorder = (list, startIndex, endIndex) => {
 		selectedId: null,
 		bgColor: 'dcd7dd',
 		value: [],
-		valueSearch: ''
+		valueSearch: '',
 	};
 	
 	handleChangeSearch = (event) => {
@@ -250,6 +250,7 @@ const reorder = (list, startIndex, endIndex) => {
 				<button className="new-add-module " onClick={this.toggleModal}>
 					Add module
 				</button>
+				<search filteredEmails={this.filteredEmails}/>
                 <DragDropContext onDragEnd={this.onDragEnd}>
 				<Droppable droppableId="droppable">
                 {(provided) => (
@@ -257,7 +258,7 @@ const reorder = (list, startIndex, endIndex) => {
 				{modules.map((module, index) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
-					let changeColor = isSuperActive ? 'red' : 'grey';
+					//let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
                         <Draggable
 					key={module._id}
