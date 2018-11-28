@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
+import { createPaths, getPath, deletePath, updatePathTitle } from '../api/paths';
+
 import '../css/Modules.css';
 import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
@@ -43,7 +45,9 @@ class Modules extends Component {
 		selectedId: null,
 		bgColor: 'dcd7dd',
 		value: [],
-		valueSearch: ''
+		valueSearch: '',
+		modulesAreloading: true,
+		learningPath: null
 	};
 
 	handleChangeSearch = (event) => {
@@ -78,8 +82,14 @@ class Modules extends Component {
 	};
 
 	componentDidMount = () => {
-		getModules().then((modules) => {
-			this.setState({ modules: modules, isLoading: false });
+		// getModules().then((modules) => {
+		// 	this.setState({ modules: modules, isLoading: false });
+		// });
+
+		const { pathId } = this.match.params;
+
+		getPath(pathId).then((learningPath) => {
+			this.setState({ learningPath, modules: learningPath.modules, isLoading: false });
 		});
 	};
 
@@ -224,7 +234,7 @@ class Modules extends Component {
 	};
 
 	render(module) {
-		const { modules, isLoading, defaultChecked } = this.state;
+		const { modules, isLoading } = this.state;
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -252,7 +262,7 @@ class Modules extends Component {
 								{modules.map((module, index) => {
 									const isSuperActive = module._id === this.state.selectedId;
 									const display = isSuperActive ? 'block' : 'none';
-									let changeColor = isSuperActive ? 'red' : 'grey';
+									// let changeColor = isSuperActive ? 'red' : 'grey';
 									return (
 										<Draggable
 											key={module._id}

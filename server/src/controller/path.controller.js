@@ -1,7 +1,20 @@
-const Path = require('../model/paths.model');
-
+const Path = require('../model/path.model');
+const Module = require('../model/module.model');
 exports.findAll = (req, res) => {
-	Paths.find()
+	Path.find()
+		.then((modules) => {
+			res.send(modules);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message
+			});
+		});
+};
+
+exports.findOne = (req, res) => {
+	Path.findById(req.params.pathId)
+		.populate('modules')
 		.then((modules) => {
 			res.send(modules);
 		})
@@ -47,4 +60,11 @@ exports.update = (req, res) => {
 				message: err.message
 			});
 		});
+};
+
+const addModuleToPath = async (pathId, moduleId) => {
+	const path = await Path.findById(pathId);
+	path.modules.push(moduleId);
+	await path.save();
+	return Path.findOneAndUpdate({ _id: pathId }, path, { new: true });
 };

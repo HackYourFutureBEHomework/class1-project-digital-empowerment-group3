@@ -25,12 +25,8 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
 	res.json({ message: 'API ready' });
 });
-app.get('/paths', (req, res) => {
-	res.json({ message: 'WELCOME TO PATHS PAGE' });
-});
 
-require('./src/route/module.route')(app);
-require('./src/route/paths.route')(app);
+require('./src/route/path.route')(app);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

@@ -38,5 +38,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "install": "^0.12.2",
+    "npm": "^6.4.1",
+    "react-edit-inline": "^1.0.8"
+  }
 }
