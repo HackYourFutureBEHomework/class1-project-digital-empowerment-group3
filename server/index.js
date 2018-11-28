@@ -24,7 +24,12 @@ app.get('/', (req, res) => {
   res.json({ message: 'API ready' });
 });
 
+
+
+
 require('./src/route/module.route')(app);
+
+
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

@@ -29,7 +29,16 @@ export default class Modules extends Component {
         </div>
       )
     }
+<<<<<<< HEAD
     searchUpdated (term) {
       this.setState({searchTerm: term})
     }
   }
+=======
+   
+    searchUpdated (term) {
+      this.setState({searchTerm: term})
+    }
+  }
+   
+>>>>>>> 4b1beb7c937490a9b7975242cf6af0770ca3294f
