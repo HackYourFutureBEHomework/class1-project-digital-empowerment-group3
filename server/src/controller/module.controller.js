@@ -1,4 +1,4 @@
-const Module = require('../model/module.model');
+// const Module = require('../model/module.model');
 exports.findAll = (req, res) => {
   Module.find()
     .then((modules) => { res.send(modules); })

@@ -1,0 +1,22 @@
+{
+  "name": "c",
+  "version": "1.0.0",
+  "description": "We're developing a real-world application for Hobo. Hobo is a day center for homeless people in Brussels. They would like to create a learning tool that teaches basic computer skills and tasks for the people coming to the center.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HackYourFutureBEHomework/class1-project-digital-empowerment-group3.git"
+  },
+  "author": "mahmoud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HackYourFutureBEHomework/class1-project-digital-empowerment-group3/issues"
+  },
+  "homepage": "https://github.com/HackYourFutureBEHomework/class1-project-digital-empowerment-group3#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
