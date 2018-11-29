@@ -62,9 +62,9 @@ exports.update = (req, res) => {
 		});
 };
 
-const addModuleToPath = async (pathId, moduleId) => {
-	const path = await Path.findById(pathId);
-	path.modules.push(moduleId);
-	await path.save();
-	return Path.findOneAndUpdate({ _id: pathId }, path, { new: true });
+exports.addModuleToPath = async (pathId, moduleId) => {
+	const learningPath = await Path.findById(pathId);
+	learningPath.modules.push(moduleId);
+	await learningPath.save();
+	return Path.findOneAndUpdate({ _id: pathId }, learningPath, { new: true });
 };
