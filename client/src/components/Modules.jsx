@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
+
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import hobo_1 from '../img/hobo_1.svg';
 //import SearchInput, { createFilter } from 'react-search-input';
@@ -22,6 +23,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 class Modules extends Component {
+
 	state = {
 		title: '',
 		title2: '',
@@ -46,6 +48,7 @@ class Modules extends Component {
 		bgColor: 'dcd7dd',
 		value: [],
 		valueSearch: '',
+
 		modulesAreloading: true,
 		learningPath: null
 	};
@@ -82,10 +85,12 @@ class Modules extends Component {
 	};
 
 	componentDidMount = () => {
-		const { pathId } = this.props.match.params;
 
+		const { pathId } = this.props.match.params;
+    
 		getPath(pathId).then((learningPath) => {
 			this.setState({ learningPath, modules: learningPath.modules, isLoading: false });
+
 		});
 	};
 
@@ -137,7 +142,9 @@ class Modules extends Component {
 				explanation: 'explanation',
 				exercise: 'exercise',
 				evaluation: 'evaluation'
+
 			});
+
 		});
 	};
 
@@ -219,6 +226,7 @@ class Modules extends Component {
 		});
 	};
 
+
 	onDragEnd = (result) => {
 		if (!result.destination) {
 			return;
@@ -228,6 +236,7 @@ class Modules extends Component {
 			modules
 		});
 	};
+
 
 	render(module) {
 		const { modules, isLoading } = this.state;
@@ -241,8 +250,10 @@ class Modules extends Component {
 			]
 		};
 
+
 		if (isLoading) return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
 		return (
+
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
@@ -251,6 +262,7 @@ class Modules extends Component {
 				<button className="new-add-module " onClick={this.toggleModal}>
 					Add module
 				</button>
+        
 				<DragDropContext onDragEnd={this.onDragEnd}>
 					<Droppable droppableId="droppable">
 						{(provided) => (
@@ -603,7 +615,8 @@ class Modules extends Component {
 				</Modal>
 			</div>
 		);
-	}
+	};
 }
 
 export default Modules;
+

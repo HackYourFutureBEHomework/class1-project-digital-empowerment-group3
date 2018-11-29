@@ -6,3 +6,4 @@ module.exports = (app) => {
 	app.delete('/module/:id', modules.destroy);
 	app.patch('/module/:id', modules.update);
 };
+
