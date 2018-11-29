@@ -4,6 +4,7 @@ import Pathnavbar from './Pathnavbar';
 import Pathheader from './Pathheader';
 import Modal from 'react-modal';
 import EditableLabel from 'react-inline-editing';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 class PathsHome extends Component {
 	state = {
@@ -81,7 +82,9 @@ class PathsHome extends Component {
 				<input value={this.state.searchField} onChange={this.updateSearch.bind(this)} />
 				{filteredPaths.map((pathItem) => (
 					<p key={pathItem._id}>
-						<p>{pathItem.pathTitle}</p>
+						<Link to={`/path/${pathItem._id}`} activeClassName="current">
+							{pathItem.pathTitle}
+						</Link>
 						<i
 							onClick={() => {
 								this.handleDeletePath(pathItem._id);

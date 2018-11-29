@@ -1,5 +1,5 @@
 const Module = require('../model/module.model');
-const paths = require('./path.controller.js');
+const paths = require('./path.controller');
 
 exports.findAll = (req, res) => {
 	Module.find()
@@ -17,10 +17,10 @@ exports.create = (req, res) => {
 	const newModule = new Module(req.body);
 	newModule
 		.save()
-		.then(async (createModule) => {
+		.then(async (createdModule) => {
 			const { pathId } = req.params;
-			if (pathId) await paths.addModuleToPath(pathId, createModule._id);
-			res.send(createModule);
+			if (pathId) await paths.addModuleToPath(pathId, createdModule._id);
+			res.send(createdModule);
 		})
 		.catch((err) => {
 			res.status(500).send({ message: err.message });
