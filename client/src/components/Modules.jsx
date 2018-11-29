@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
-import { createPaths, getPath, deletePath, updatePathTitle } from '../api/paths';
+import { createPaths, getPath, deletePath, updatePathTitle, getPaths } from '../api/paths';
 
 import '../css/Modules.css';
 import Modal from 'react-modal';
@@ -86,12 +86,8 @@ class Modules extends Component {
 
 	componentDidMount = () => {
 
-		// getModules().then((modules) => {
-		// 	this.setState({ modules: modules, isLoading: false });
-		// });
-
-		const { pathId } = this.match.params;
-
+		const { pathId } = this.props.match.params;
+    
 		getPath(pathId).then((learningPath) => {
 			this.setState({ learningPath, modules: learningPath.modules, isLoading: false });
 
