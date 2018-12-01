@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
-import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
+import { createModule, deleteModule, updateModule } from '../api/modules';
+import { getPath } from '../api/paths';
+
 import '../css/Modules.css';
 import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
-import 'react-accessible-accordion/dist/fancy-example.css';
-import { DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+// import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import hobo_1 from '../img/hobo_1.svg';
-//import SearchInput, {createFilter} from 'react-search-input'
+import { Link } from 'react-router-dom';
 
 const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
-	const [removed] = result.splice(startIndex, 1);
+	const [ removed ] = result.splice(startIndex, 1);
 	result.splice(endIndex, 0, removed);
-  
-	return result;
-  };
 
-  class Modules extends Component {
+	return result;
+};
+
+class Modules extends Component {
+
 	state = {
 		title: '',
 		title2: '',
@@ -44,8 +46,11 @@ const reorder = (list, startIndex, endIndex) => {
 		bgColor: 'dcd7dd',
 		value: [],
 		valueSearch: '',
+
+		modulesAreloading: true,
+		path: null
 	};
-	
+
 	handleChangeSearch = (event) => {
 		const { valueSearch } = event.target;
 		this.setState({ valueSearch });
@@ -78,8 +83,11 @@ const reorder = (list, startIndex, endIndex) => {
 	};
 
 	componentDidMount = () => {
-		getModules().then((modules) => {
-			this.setState({ modules: modules, isLoading: false });
+
+
+		getPath(pathId).then((path) => {
+			this.setState({ path, modules: path.modules, isLoading: false });
+
 		});
 	};
 
@@ -109,6 +117,7 @@ const reorder = (list, startIndex, endIndex) => {
 
 	handleSubmit = () => {
 		createModule(
+			this.state.path._id,
 			this.state.title,
 			this.state.title2,
 			this.state.title3,
@@ -131,7 +140,9 @@ const reorder = (list, startIndex, endIndex) => {
 				explanation: 'explanation',
 				exercise: 'exercise',
 				evaluation: 'evaluation'
-			})
+
+			});
+
 		});
 	};
 
@@ -213,20 +224,16 @@ const reorder = (list, startIndex, endIndex) => {
 		});
 	};
 
+	// onDragEnd = (result) => {
+	// 	if (!result.destination) {
+	// 		return;
+	// 	}
+	// 	const modules = reorder(this.state.modules, result.source.index, result.destination.index);
+	// 	this.setState({
+	// 		modules
+	// 	});
+	// };
 
-	onDragEnd = result => {
-		if (!result.destination) {
-		  return;
-		}
-		const modules = reorder(
-		  this.state.modules,
-		  result.source.index,
-		  result.destination.index
-		);
-		this.setState({
-		  modules
-		});
-	  };
 
 	render(module) {
 		const { modules, isLoading } = this.state;
@@ -240,39 +247,34 @@ const reorder = (list, startIndex, endIndex) => {
 			]
 		};
 
-		if (isLoading)  return <img className="hobo-logo" src={hobo_1} width="100" height="50" alt="hobo_1"/>;
-		return  (
+		if (isLoading)
+			return (
+				<div className="wrapper">
+					<div className="ball ball-1" />
+					<div className="ball ball-2" />
+					<div className="ball ball-3" />
+				</div>
+			);
+
+		return (
+
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
 					<h2 className="navbar-title container">HOBO</h2>{' '}
+					<Link to={`/path`} className="link">
+						Home
+					</Link>
 				</div>
 				<button className="new-add-module " onClick={this.toggleModal}>
 					Add module
 				</button>
-				<search filteredEmails={this.filteredEmails}/>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-				<Droppable droppableId="droppable">
-                {(provided) => (
-					<div ref={provided.innerRef}>
-				{modules.map((module, index) => {
+        
+				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
-					//let changeColor = isSuperActive ? 'red' : 'grey';
+					let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
-                        <Draggable
-					key={module._id}
-					draggableId={module._id}
-					index={index}
-					className={
-						this.state.active === module._id ? "active" : null
-					}>
-                    {(provided) => (
-						<div
-						ref={provided.innerRef}
-						{...provided.draggableProps}
-						{...provided.dragHandleProps}>
-
 						<div className="container mt-5">
 							<div key={module._id} />
 							<span className="card card-body mb-5">
@@ -281,8 +283,9 @@ const reorder = (list, startIndex, endIndex) => {
 										<AccordionItemTitle style={{ backgroundColor: this.state.bgColor }}>
 											<h3>{module.title}</h3>
 											<i onClick={this.toggleModal} className="far fa-edit" />
-											<i onClick={ () => {
-													this.handleDelete(module._id)
+											<i
+												onClick={() => {
+													this.handleDelete(module._id);
 												}}
 												className="far fa-trash-alt"
 											/>
@@ -383,8 +386,7 @@ const reorder = (list, startIndex, endIndex) => {
 												>
 													Update
 												</button>
-												<button className="btn-onadd" onClick={this.handleSubmit} disabled={!this.state.title}
-                                                >
+												<button className="btn-onadd" onClick={this.handleSubmit}>
 													Add new module
 												</button>
 											</Modal>
@@ -444,19 +446,8 @@ const reorder = (list, startIndex, endIndex) => {
 								</Accordion>
 							</span>
 						</div>
-                    </div>
-				)}
-                        </Draggable>
 					);
 				})}
-                {provided.placeholder}
-                </div>
-				)}
-                </Droppable>
-				</DragDropContext>
-
-
-
 
 				<Modal
 					isOpen={this.state.isActive}
