@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { createPaths, getPaths, deletePath, updatePathTitle } from '../api/paths';
 import Pathnavbar from './Pathnavbar';
-
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import Modal from 'react-modal';
 // import EditableLabel from 'react-inline-editing';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import { Link } from 'react-router-dom';
 
 class PathsHome extends Component {

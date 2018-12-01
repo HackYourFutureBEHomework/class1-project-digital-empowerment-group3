@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
 	res.json({ message: 'API ready' });
 });
+require('./src/route/module.route')(app);
 
 require('./src/route/path.route')(app);
 

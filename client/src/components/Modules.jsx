@@ -46,7 +46,6 @@ class Modules extends Component {
 		bgColor: 'dcd7dd',
 		value: [],
 		valueSearch: '',
-
 		modulesAreloading: true,
 		path: null
 	};
@@ -83,7 +82,8 @@ class Modules extends Component {
 	};
 
 	componentDidMount = () => {
-		getPath().then((path) => {
+    const { pathId } = this.props.match.params;
+		getPath(pathId).then((path) => {
 			this.setState({ path, modules: path.modules, isLoading: false });
 
 		});
@@ -540,4 +540,5 @@ class Modules extends Component {
 	};
 }
 
-export default Modules
+export default Modules;
+
