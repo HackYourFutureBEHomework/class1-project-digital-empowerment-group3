@@ -1,27 +1,16 @@
 import React, { Component } from 'react';
 import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
-import { createPaths, getPath, deletePath, updatePathTitle, getPaths } from '../api/paths';
-
 import '../css/Modules.css';
 import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
-// import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import 'react-accessible-accordion/dist/fancy-example.css';
 import hobo_1 from '../img/hobo_1.svg';
-//import SearchInput, { createFilter } from 'react-search-input';
-
-const reorder = (list, startIndex, endIndex) => {
-	const result = Array.from(list);
-	const [ removed ] = result.splice(startIndex, 1);
-	result.splice(endIndex, 0, removed);
-
-	return result;
-};
+import SearchInput, { createFilter } from 'react-search-input';
 
 class Modules extends Component {
-
 	state = {
 		title: '',
 		title2: '',
@@ -45,10 +34,7 @@ class Modules extends Component {
 		selectedId: null,
 		bgColor: 'dcd7dd',
 		value: [],
-		valueSearch: '',
-
-		modulesAreloading: true,
-		learningPath: null
+		valueSearch: ''
 	};
 
 	handleChangeSearch = (event) => {
@@ -81,14 +67,9 @@ class Modules extends Component {
 			defaultChecked: !test
 		});
 	};
-
 	componentDidMount = () => {
-
-		const { pathId } = this.props.match.params;
-    
-		getPath(pathId).then((learningPath) => {
-			this.setState({ learningPath, modules: learningPath.modules, isLoading: false });
-
+		getModules().then((modules) => {
+			this.setState({ modules: modules, isLoading: false });
 		});
 	};
 
@@ -103,13 +84,11 @@ class Modules extends Component {
 			title2: event.target.value
 		});
 	};
-
 	handleChangeTitleEvaluation = (event) => {
 		this.setState({
 			title3: event.target.value
 		});
 	};
-
 	handleChangeTitle4 = (event) => {
 		this.setState({
 			title4: event.target.value
@@ -118,7 +97,6 @@ class Modules extends Component {
 
 	handleSubmit = () => {
 		createModule(
-			this.state.learningPath._id,
 			this.state.title,
 			this.state.title2,
 			this.state.title3,
@@ -141,9 +119,7 @@ class Modules extends Component {
 				explanation: 'explanation',
 				exercise: 'exercise',
 				evaluation: 'evaluation'
-
 			});
-
 		});
 	};
 
@@ -225,19 +201,9 @@ class Modules extends Component {
 		});
 	};
 
-	// onDragEnd = (result) => {
-	// 	if (!result.destination) {
-	// 		return;
-	// 	}
-	// 	const modules = reorder(this.state.modules, result.source.index, result.destination.index);
-	// 	this.setState({
-	// 		modules
-	// 	});
-	// };
-
-
 	render(module) {
-		const { modules, isLoading } = this.state;
+		const { modules, isLoading, defaultChecked } = this.state;
+
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -248,10 +214,8 @@ class Modules extends Component {
 			]
 		};
 
-
 		if (isLoading) return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
 		return (
-
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
@@ -260,7 +224,7 @@ class Modules extends Component {
 				<button className="new-add-module " onClick={this.toggleModal}>
 					Add module
 				</button>
-        
+
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
@@ -522,14 +486,13 @@ class Modules extends Component {
 						evaluation
 					</button>
 
-					<button className="btn-onadd" onClick={this.handleSubmit} disabled={!this.state.title}>
+					<button className="btn-onadd" onClick={this.handleSubmit}>
 						Add new module
 					</button>
 				</Modal>
 			</div>
 		);
-	};
+	}
 }
 
 export default Modules;
-

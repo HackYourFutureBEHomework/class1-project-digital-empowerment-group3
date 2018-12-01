@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { createPaths, getPaths, deletePath, updatePathTitle } from '../api/paths';
 import Pathnavbar from './Pathnavbar';
-
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import Pathheader from './Pathheader';
 import Modal from 'react-modal';
-// import EditableLabel from 'react-inline-editing';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { Link } from 'react-router-dom';
+import EditableLabel from 'react-inline-editing';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 class PathsHome extends Component {
 	state = {
@@ -81,61 +78,25 @@ class PathsHome extends Component {
 		return (
 			<div>
 				<Pathnavbar />
-				<div className="box">
-					<div class="container-2">
-						<span className="icon">
-							<i className="fa fa-search" />
-						</span>
-						<input
-							value={this.state.searchField}
-							onChange={this.updateSearch.bind(this)}
-							type="search"
-							id="search"
-							placeholder="Search..."
-						/>
-						<button className="new-add-module add-path" onClick={this.handleModal}>
-							Add path
-						</button>
-					</div>
-				</div>
+				<Pathheader />
+				<input value={this.state.searchField} onChange={this.updateSearch.bind(this)} />
 				{filteredPaths.map((pathItem) => (
-					<span key={pathItem._id}>
-						<span className="cards">
-							<Card className="Card">
-								<CardImg
-									top
-									width="100%"
-									src="https://images.unsplash.com/photo-1529302374944-90ecd276bdb8?ixlib=rb-0.3.5&s=dc226da8e1697ad2c2b85fb9ac2b7130&auto=format&fit=crop&w=1969&q=80"
-									alt="Card image cap"
-								/>
-
-								<CardBody>
-									<CardTitle>
-										{' '}
-										<Link to={`/path/${pathItem._id}`} className="link2">
-											{pathItem.pathTitle}
-										</Link>
-									</CardTitle>
-									<CardSubtitle>A good way to sharp your skills</CardSubtitle>
-									<CardText>Some quick example to learn how to use a computer</CardText>
-									<button
-										className="btn-update"
-										onClick={() => this.handleUpdatePathTitle(pathItem._id)}
-									>
-										Update
-									</button>
-
-									<i
-										onClick={() => {
-											this.handleDeletePath(pathItem._id);
-										}}
-										className="far fa-trash-alt"
-									/>
-								</CardBody>
-							</Card>
-						</span>
-					</span>
+					<p key={pathItem._id}>
+						<Link to={`/path/${pathItem._id}`} activeClassName="current">
+							{pathItem.pathTitle}
+						</Link>
+						<i
+							onClick={() => {
+								this.handleDeletePath(pathItem._id);
+							}}
+							className="far fa-trash-alt"
+						/>
+						<button className="btn-update" onClick={() => this.handleUpdatePathTitle(pathItem._id)}>
+							Update
+						</button>
+					</p>
 				))}{' '}
+				<h1>working</h1>
 				<Modal
 					isOpen={this.state.selectedModalOption}
 					onRequestClose={this.handleModal}
@@ -151,11 +112,13 @@ class PathsHome extends Component {
 						className="input-addmodule"
 						onKeyPress={(event) => this.handleChangeTitlePath(event)}
 					/>
-
 					<button className="btn-onadd" onClick={this.handlecreateNewPath}>
 						Add new path
 					</button>
 				</Modal>
+				<button className="new-add-module " onClick={this.handleModal}>
+					Add path
+				</button>
 			</div>
 		);
 	}
