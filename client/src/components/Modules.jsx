@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getModules, createModule, deleteModule, updateModule } from '../api/modules';
-import { createPaths, getPath, deletePath, updatePathTitle, getPaths } from '../api/paths';
+import { createModule, deleteModule, updateModule } from '../api/modules';
+import { getPath } from '../api/paths';
 
 import '../css/Modules.css';
 import Modal from 'react-modal';
@@ -11,7 +11,7 @@ import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 
 import 'react-accessible-accordion/dist/fancy-example.css';
 // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import hobo_1 from '../img/hobo_1.svg';
-//import SearchInput, { createFilter } from 'react-search-input';
+import { Link } from 'react-router-dom';
 
 const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
@@ -47,7 +47,7 @@ class Modules extends Component {
 		value: [],
 		valueSearch: '',
 		modulesAreloading: true,
-		learningPath: null
+		path: null
 	};
 
 	handleChangeSearch = (event) => {
@@ -84,8 +84,8 @@ class Modules extends Component {
 	componentDidMount = () => {
 		const { pathId } = this.props.match.params;
 
-		getPath(pathId).then((learningPath) => {
-			this.setState({ learningPath, modules: learningPath.modules, isLoading: false });
+		getPath(pathId).then((path) => {
+			this.setState({ path, modules: path.modules, isLoading: false });
 		});
 	};
 
@@ -115,7 +115,7 @@ class Modules extends Component {
 
 	handleSubmit = () => {
 		createModule(
-			this.state.learningPath._id,
+			this.state.path._id,
 			this.state.title,
 			this.state.title2,
 			this.state.title3,
@@ -242,12 +242,22 @@ class Modules extends Component {
 			]
 		};
 
-		if (isLoading) return <img className="hobo-logo" src={hobo_1} width="100" height="50" />;
+		if (isLoading)
+			return (
+				<div className="wrapper">
+					<div className="ball ball-1" />
+					<div className="ball ball-2" />
+					<div className="ball ball-3" />
+				</div>
+			);
 		return (
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
 					<h2 className="navbar-title container">HOBO</h2>{' '}
+					<Link to={`/path`} className="link">
+						Home
+					</Link>
 				</div>
 				<button className="new-add-module " onClick={this.toggleModal}>
 					Add module
@@ -266,7 +276,9 @@ class Modules extends Component {
 											<h3>{module.title}</h3>
 											<i onClick={this.toggleModal} className="far fa-edit" />
 											<i
-												onClick={this.handleDelete.bind(this, module._id)}
+												onClick={() => {
+													this.handleDelete(module._id);
+												}}
 												className="far fa-trash-alt"
 											/>
 

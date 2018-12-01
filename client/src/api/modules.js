@@ -34,14 +34,14 @@ export const createModule = (
 	}).then((response) => response.json());
 };
 
-export const deleteModule = (learningPath) => {
-	return fetch(`${API_URL}/path/${learningPath}/module`, {
+export const deleteModule = (id) => {
+	return fetch(`${API_URL}/module/${id}`, {
 		method: 'DELETE'
 	}).then((response) => response.json());
 };
 
 export const updateModule = (id, title, title2, title3, title4, explanation, exercise, evaluation, completed) => {
-	return fetch(`${API_URL}/path/${id}/module`, {
+	return fetch(`${API_URL}/module/${id}`, {
 		method: 'PATCH',
 		headers: new Headers({
 			'Content-Type': 'application/json'
