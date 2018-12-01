@@ -35,3 +35,8 @@ export default class Modules extends Component {
     }
   }
    
+    searchUpdated (term) {
+      this.setState({searchTerm: term})
+    }
+  }
+   
