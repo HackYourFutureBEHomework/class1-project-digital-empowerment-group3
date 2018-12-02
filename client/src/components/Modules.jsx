@@ -9,16 +9,15 @@ import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import hobo_1 from '../img/hobo_1.svg';
 import { Link } from 'react-router-dom';
 
-const reorder = (list, startIndex, endIndex) => {
-	const result = Array.from(list);
-	const [ removed ] = result.splice(startIndex, 1);
-	result.splice(endIndex, 0, removed);
+// const reorder = (list, startIndex, endIndex) => {
+// 	const result = Array.from(list);
+// 	const [ removed ] = result.splice(startIndex, 1);
+// 	result.splice(endIndex, 0, removed);
 
-	return result;
-};
+// 	return result;
+// };
 
 class Modules extends Component {
 
@@ -46,6 +45,7 @@ class Modules extends Component {
 		bgColor: 'dcd7dd',
 		value: [],
 		valueSearch: '',
+
 		modulesAreloading: true,
 		path: null
 	};
@@ -82,11 +82,17 @@ class Modules extends Component {
 	};
 
 	componentDidMount = () => {
-    const { pathId } = this.props.match.params;
+		const { pathId } = this.props.match.params;
 		getPath(pathId).then((path) => {
+			if (this.isUnmounted) {
+				return;
+			}
 			this.setState({ path, modules: path.modules, isLoading: false });
 
 		});
+	};
+	componentWillUnmount = () => {
+		this.isUnmounted = true;
 	};
 
 	handleChangeTitle = (event) => {
@@ -232,7 +238,6 @@ class Modules extends Component {
 	// 	});
 	// };
 
-
 	render(module) {
 		const { modules, isLoading } = this.state;
 		const editorOptions = {
@@ -271,7 +276,7 @@ class Modules extends Component {
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
-					let changeColor = isSuperActive ? 'red' : 'grey';
+					//let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
 						<div className="container mt-5">
 							<div key={module._id} />
@@ -541,4 +546,3 @@ class Modules extends Component {
 }
 
 export default Modules;
-

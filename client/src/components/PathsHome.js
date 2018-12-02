@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { createPaths, getPaths, deletePath, updatePathTitle } from '../api/paths';
 import Pathnavbar from './Pathnavbar';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import Modal from 'react-modal';
 // import EditableLabel from 'react-inline-editing';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { Link } from 'react-router-dom';
 
 class PathsHome extends Component {
@@ -18,8 +20,15 @@ class PathsHome extends Component {
 
 	componentDidMount = () => {
 		getPaths().then((paths) => {
+			if (this.isUnmounted) {
+				return;
+			}
 			this.setState({ paths: paths, isLoading: false });
 		});
+	};
+
+	componentWillUnmount = () => {
+		this.isUnmounted = true;
 	};
 
 	handleChangeTitlePath = (event) => {
@@ -63,7 +72,7 @@ class PathsHome extends Component {
 	};
 
 	render() {
-		const { paths, isLoading } = this.state;
+		const { isLoading } = this.state;
 		let filteredPaths = this.state.paths.filter((pathItem) => {
 			return pathItem.pathTitle.toLowerCase().indexOf(this.state.searchField.toLowerCase()) !== -1;
 		});
@@ -80,7 +89,7 @@ class PathsHome extends Component {
 			<div>
 				<Pathnavbar />
 				<div className="box">
-					<div class="container-2">
+					<div className="container-2">
 						<span className="icon">
 							<i className="fa fa-search" />
 						</span>
