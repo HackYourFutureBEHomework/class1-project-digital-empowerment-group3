@@ -9,16 +9,15 @@ import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import hobo_1 from '../img/hobo_1.svg';
 import { Link } from 'react-router-dom';
 
-const reorder = (list, startIndex, endIndex) => {
-	const result = Array.from(list);
-	const [ removed ] = result.splice(startIndex, 1);
-	result.splice(endIndex, 0, removed);
+// const reorder = (list, startIndex, endIndex) => {
+// 	const result = Array.from(list);
+// 	const [ removed ] = result.splice(startIndex, 1);
+// 	result.splice(endIndex, 0, removed);
 
-	return result;
-};
+// 	return result;
+// };
 
 class Modules extends Component {
 
@@ -86,9 +85,15 @@ class Modules extends Component {
 
 
 		getPath(pathId).then((path) => {
+			if (this.isUnmounted) {
+				return;
+			}
 			this.setState({ path, modules: path.modules, isLoading: false });
 
 		});
+	};
+	componentWillUnmount = () => {
+		this.isUnmounted = true;
 	};
 
 	handleChangeTitle = (event) => {
@@ -233,7 +238,6 @@ class Modules extends Component {
 	// 		modules
 	// 	});
 	// };
-
 
 	render(module) {
 		const { modules, isLoading } = this.state;
