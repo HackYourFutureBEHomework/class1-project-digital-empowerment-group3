@@ -82,7 +82,7 @@ class Modules extends Component {
 	};
 
 	componentDidMount = () => {
-
+  const { pathId } = this.props.match.params;
 
 		getPath(pathId).then((path) => {
 			if (this.isUnmounted) {
