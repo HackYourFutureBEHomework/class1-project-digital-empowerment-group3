@@ -10,16 +10,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
 import 'react-accessible-accordion/dist/fancy-example.css';
 // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import hobo_1 from '../img/hobo_1.svg';
 import { Link } from 'react-router-dom';
 
-const reorder = (list, startIndex, endIndex) => {
-	const result = Array.from(list);
-	const [ removed ] = result.splice(startIndex, 1);
-	result.splice(endIndex, 0, removed);
+// const reorder = (list, startIndex, endIndex) => {
+// 	const result = Array.from(list);
+// 	const [ removed ] = result.splice(startIndex, 1);
+// 	result.splice(endIndex, 0, removed);
 
-	return result;
-};
+// 	return result;
+// };
 
 class Modules extends Component {
 	state = {
@@ -85,8 +84,14 @@ class Modules extends Component {
 		const { pathId } = this.props.match.params;
 
 		getPath(pathId).then((path) => {
+			if (this.isUnmounted) {
+				return;
+			}
 			this.setState({ path, modules: path.modules, isLoading: false });
 		});
+	};
+	componentWillUnmount = () => {
+		this.isUnmounted = true;
 	};
 
 	handleChangeTitle = (event) => {
@@ -219,16 +224,6 @@ class Modules extends Component {
 			showTextEditorExercise: false
 		});
 	};
-
-	// onDragEnd = (result) => {
-	// 	if (!result.destination) {
-	// 		return;
-	// 	}
-	// 	const modules = reorder(this.state.modules, result.source.index, result.destination.index);
-	// 	this.setState({
-	// 		modules
-	// 	});
-	// };
 
 	render(module) {
 		const { modules, isLoading } = this.state;
