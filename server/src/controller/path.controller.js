@@ -1,5 +1,6 @@
 const Path = require('../model/path.model');
 const Module = require('../model/module.model');
+const jwt = require('jsonwebtoken');
 exports.findAll = (req, res) => {
 	Path.find()
 		.then((modules) => {
@@ -49,17 +50,24 @@ exports.destroy = (req, res) => {
 		});
 };
 
+const { JWT_SECRET } = process.env;
+
 exports.update = (req, res) => {
-	const { pathTitle } = req.body;
-	Path.findOneAndUpdate({ _id: req.params.id }, { pathTitle }, { new: true })
-		.then((data) => {
-			res.send(data);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: err.message
+	const { token } = req.body;
+
+	jwt.verify(token, JWT_SECRET, async (err) => {
+		if (err) return res.send({ message: 'token invalid' });
+		const { pathTitle } = req.body;
+		Path.findOneAndUpdate({ _id: req.params.id }, { pathTitle }, { new: true })
+			.then((data) => {
+				res.send(data);
+			})
+			.catch((err) => {
+				res.status(500).send({
+					message: err.message
+				});
 			});
-		});
+	});
 };
 
 exports.addModuleToPath = async (pathId, moduleId) => {

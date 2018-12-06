@@ -71,8 +71,10 @@ class PathsHome extends Component {
 
 	render() {
 		const { isLoading } = this.state;
+		const { isLoggedIn } = this.props;
 		let filteredPaths = this.state.paths.filter((pathItem) => {
-			if(!pathItem.pathTitle) {
+
+			if (!pathItem.pathTitle) {
 				return;
 			}
 			return pathItem.pathTitle.toLowerCase().indexOf(this.state.searchField.toLowerCase()) !== -1;
@@ -126,19 +128,22 @@ class PathsHome extends Component {
 									</CardTitle>
 									<CardSubtitle>A good way to sharp your skills</CardSubtitle>
 									<CardText>Some quick example to learn how to use a computer</CardText>
-									<button
-										className="btn-update"
-										onClick={() => this.handleUpdatePathTitle(pathItem._id)}
-									>
-										Update
-									</button>
-
-									<i
-										onClick={() => {
-											this.handleDeletePath(pathItem._id);
-										}}
-										className="far fa-trash-alt"
-									/>
+									{isLoggedIn && (
+										<span>
+											<button
+												className="btn-update"
+												onClick={() => this.handleUpdatePathTitle(pathItem._id)}
+											>
+												Update
+											</button>
+											<i
+												onClick={() => {
+													this.handleDeletePath(pathItem._id);
+												}}
+												className="far fa-trash-alt"
+											/>
+										</span>
+									)}
 								</CardBody>
 							</Card>
 						</span>
