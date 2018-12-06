@@ -355,6 +355,55 @@ body {
 
 .ball-3 {
 	margin-left: 120px;
+
+}
+
+.none-body {
+	display: block;
+}
+
+.hobo-logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	margin-top: 30rem;
+	animation: hobo 1.5s infinite ease-in-out;
+	padding: 12px;
+	height: 20rem;
+	width: 20rem;
+
+	border-radius: 190px;
+}
+@keyframes hobo {
+	0% {
+		background: rgb(252, 252, 252);
+	}
+	25% {
+		background: rgb(255, 0, 4);
+	}
+	50% {
+		background: rgb(213, 89, 61);
+	}
+	75% {
+		background: rgb(254, 255, 255);
+	}
+	100% {
+		background: rgb(255, 25, 0);
+	}
+}
+
+@media screen and (max-width: 1262px) {
+	.new-add-module {
+		border-radius: 6px;
+		border: solid 1px red;
+		background-color: #fff;
+		color: rgb(114, 113, 113);
+		padding: 1rem;
+		cursor: pointer;
+		margin-left: 80rem;
+		margin-top: 13rem;
+	}
 }
 
 .bg-header {
