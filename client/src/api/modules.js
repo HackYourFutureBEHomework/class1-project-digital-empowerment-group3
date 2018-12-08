@@ -4,8 +4,18 @@ export const getModules = () => {
 	return fetch(`${API_URL}/module`).then((response) => response.json());
 };
 
-export const createModule = (title, title2, title3, title4, explanation, exercise, evaluation, completed) => {
-	return fetch(`${API_URL}/module`, {
+export const createModule = (
+	learningPath,
+	title,
+	title2,
+	title3,
+	title4,
+	explanation,
+	exercise,
+	evaluation,
+	completed
+) => {
+	return fetch(`${API_URL}/path/${learningPath}/module`, {
 		method: 'POST',
 		headers: new Headers({
 			'Content-Type': 'application/json'
