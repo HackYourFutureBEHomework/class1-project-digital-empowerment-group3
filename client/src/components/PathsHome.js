@@ -70,7 +70,7 @@ class PathsHome extends Component {
 
 	render() {
 		const { isLoading } = this.state;
-		const { IsLoggedIn } = this.props;
+		const { IsloggedIn } = this.props;
 		let filteredPaths = this.state.paths.filter((pathItem) => {
 
 			if (!pathItem.pathTitle) {
@@ -102,11 +102,14 @@ class PathsHome extends Component {
 							id="search"
 							placeholder="Search..."
 						/>
-						{IsLoggedIn ? (
+
+						<Link to={'/login'}>hello</Link>
+
+						{IsloggedIn && (
 							<button className="new-add-module add-path" onClick={this.handleModal}>
 								Add path
 							</button>
-						) : null}
+						)}
 					</div>
 				</div>
 				{filteredPaths.map((pathItem) => (
@@ -129,7 +132,7 @@ class PathsHome extends Component {
 									</CardTitle>
 									<CardSubtitle>A good way to sharp your skills</CardSubtitle>
 									<CardText>Some quick example to learn how to use a computer</CardText>
-									{IsLoggedIn ? (
+									{IsloggedIn && (
 										<span>
 											<button
 												className="btn-update"
@@ -144,7 +147,7 @@ class PathsHome extends Component {
 												className="far fa-trash-alt"
 											/>
 										</span>
-									) : null}
+									)}
 								</CardBody>
 							</Card>
 						</span>

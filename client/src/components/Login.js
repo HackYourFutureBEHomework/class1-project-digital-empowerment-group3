@@ -1,38 +1,36 @@
 import React, { Component } from 'react';
-//import { logIn } from '../api/login';
-//import Cookies from 'universal-cookie';
+import { logIn } from '../api/login';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+import Cookies from 'universal-cookie';
 
-const headers = new Headers({
-	'Content-Type': 'application/json'
-});
+const cookies = new Cookies();
 
 class Login extends Component {
 	state = {
+		isLoading: true,
 		email: '',
-		password: ''
+		password: '',
+		error: ''
 	};
-	login = async (e) => {
+
+	login = (e) => {
 		const { email, password } = this.state;
+		const { history } = this.props;
+
 		e.preventDefault();
-
-		const response = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			headers,
-			body: JSON.stringify({ email, password })
+		logIn(email, password).then((res) => {
+			if (!res.token) return this.setState({ error: res.error });
+			cookies.set('token', res.token);
+			return this.props.setLoggedInState();
 		});
-
-		const { token } = await response.json();
-		document.cookie = `token=${token}`;
-		this.props.setLoggedInState();
-
-		console.log(token);
 	};
 
 	setField = (e) => {
 		this.setState({ [e.currentTarget.name]: e.currentTarget.value });
 	};
 	render() {
-		const { email, password, errors } = this.state;
+		const { email, password, isLoading } = this.state;
 
 		return (
 			<div>
