@@ -240,6 +240,7 @@ class Modules extends Component {
 
 	render(module) {
 		const { modules, isLoading } = this.state;
+		const { IsLoggedIn } = this.props;
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -269,9 +270,12 @@ class Modules extends Component {
 						Home
 					</Link>
 				</div>
-				<button className="new-add-module " onClick={this.toggleModal}>
-					Add module
-				</button>
+
+				{IsLoggedIn ? (
+					<button className="new-add-module " onClick={this.toggleModal}>
+						Add module
+					</button>
+				) : null}
         
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;

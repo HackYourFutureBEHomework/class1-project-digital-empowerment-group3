@@ -3,7 +3,6 @@ import { createPaths, getPaths, deletePath, updatePathTitle } from '../api/paths
 import Pathnavbar from './Pathnavbar';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import Modal from 'react-modal';
-// import EditableLabel from 'react-inline-editing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
@@ -71,7 +70,7 @@ class PathsHome extends Component {
 
 	render() {
 		const { isLoading } = this.state;
-		const { isLoggedIn } = this.props;
+		const { IsLoggedIn } = this.props;
 		let filteredPaths = this.state.paths.filter((pathItem) => {
 
 			if (!pathItem.pathTitle) {
@@ -103,9 +102,11 @@ class PathsHome extends Component {
 							id="search"
 							placeholder="Search..."
 						/>
-						<button className="new-add-module add-path" onClick={this.handleModal}>
-							Add path
-						</button>
+						{IsLoggedIn ? (
+							<button className="new-add-module add-path" onClick={this.handleModal}>
+								Add path
+							</button>
+						) : null}
 					</div>
 				</div>
 				{filteredPaths.map((pathItem) => (
@@ -128,7 +129,7 @@ class PathsHome extends Component {
 									</CardTitle>
 									<CardSubtitle>A good way to sharp your skills</CardSubtitle>
 									<CardText>Some quick example to learn how to use a computer</CardText>
-									{isLoggedIn && (
+									{IsLoggedIn ? (
 										<span>
 											<button
 												className="btn-update"
@@ -143,7 +144,7 @@ class PathsHome extends Component {
 												className="far fa-trash-alt"
 											/>
 										</span>
-									)}
+									) : null}
 								</CardBody>
 							</Card>
 						</span>

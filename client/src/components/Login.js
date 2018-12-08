@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { logIn } from '../api/login';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 const headers = new Headers({
 	'Content-Type': 'application/json'
@@ -9,12 +9,10 @@ const headers = new Headers({
 class Login extends Component {
 	state = {
 		email: '',
-		password: '',
-
-		errors: []
+		password: ''
 	};
 	login = async (e) => {
-		const { email, password, errors } = this.state;
+		const { email, password } = this.state;
 		e.preventDefault();
 
 		const response = await fetch('http://localhost:4000/login', {
@@ -46,7 +44,6 @@ class Login extends Component {
 					<label>
 						password:
 						<input type="password" value={password} name="password" onChange={this.setField} />
-						{errors.password && <p>{errors.password}</p>}
 					</label>
 					<input type="submit" value="login" />
 				</form>
@@ -56,13 +53,3 @@ class Login extends Component {
 }
 
 export default Login;
-
-//const response = await fetch('http://localhost:4000/api/login', {
-// 	method: 'POST',
-// 	headers,
-// 	body: JSON.stringify({ email, password })
-// });
-// const { token } = await response.json();
-// document.cookie = `token=${token}`;
-// this.props.setLoggedInState();
-// console.log(token);
