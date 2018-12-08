@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { logIn } from '../api/login';
-import Cookies from 'universal-cookie';
+//import { logIn } from '../api/login';
+//import Cookies from 'universal-cookie';
 
 const headers = new Headers({
 	'Content-Type': 'application/json'
