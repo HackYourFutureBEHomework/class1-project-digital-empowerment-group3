@@ -51,23 +51,21 @@ exports.destroy = (req, res) => {
 };
 
 const { JWT_SECRET } = process.env;
-
 exports.update = (req, res) => {
 	const { token } = req.body;
 
-	jwt.verify(token, JWT_SECRET, async (err) => {
-		if (err) return res.send({ message: 'token invalid' });
-		const { pathTitle } = req.body;
-		Path.findOneAndUpdate({ _id: req.params.id }, { pathTitle }, { new: true })
-			.then((data) => {
-				res.send(data);
-			})
-			.catch((err) => {
-				res.status(500).send({
-					message: err.message
-				});
+	if (err) return res.send({ message: 'token invalid' });
+
+	const { pathTitle } = req.body;
+	Path.findOneAndUpdate({ _id: req.params.id }, { pathTitle }, { new: true })
+		.then((data) => {
+			res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message
 			});
-	});
+		});
 };
 
 exports.addModuleToPath = async (pathId, moduleId) => {

@@ -3,13 +3,8 @@ const gravatar = require('gravatar');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const validateRegisterInput = require('../validation/register');
-exports.find = (req, res) => {
-	const { errors, isValid } = validateRegisterInput(req.body);
-	if (!isValid) {
-		return res.status(400).json(errors);
-	}
 
+exports.find = (req, res) => {
 	User.findOne({ email: req.body.email }).then((user) => {
 		if (user) {
 			return res.status(400).json({ email: 'This email already exists' });
@@ -47,11 +42,12 @@ exports.findOne = (req, res) => {
 
 		bcrypt.compare(password, user.password).then((passwordMatched) => {
 			if (passwordMatched) {
-				const payload = { id: user.id, name: user.name, avatar: user.avatar };
+				const payload = { email };
 				jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
 					res.json({
 						Success: true,
-						token: 'Bearer ' + token
+						token: token,
+						email
 					});
 				});
 			} else {
