@@ -20,12 +20,6 @@ class App extends Component {
 		this.setState({ loggedIn: true });
 	};
 
-	doLogOut = () => {
-		document.cookie = null;
-		this.setState({
-			loggedIn: false
-		});
-	};
 	render() {
 		const { loggedIn } = this.state;
 		console.log(loggedIn);
@@ -33,9 +27,12 @@ class App extends Component {
 			<Router>
 				<Switch>
 					<Route exact path="/login" render={() => <Login setLoggedInState={this.setLoggedInState} />} />
-					<Route exact path="/:path(|paths|path|index)" render={() => <Paths isLoggedIn={loggedIn} />} />
-					<Route path="/path/:pathId" component={Modules} />
-					<Route path="/logout" render={() => this.doLogOut()} />
+					<Route exact path="/:path(|paths|path|index)" render={() => <Paths IsloggedIn={loggedIn} />} />
+					<Route
+						exact
+						path="/path/:pathId"
+						render={(props) => <Modules {...props} IsloggedIn={loggedIn} />}
+					/>
 				</Switch>
 			</Router>
 		);

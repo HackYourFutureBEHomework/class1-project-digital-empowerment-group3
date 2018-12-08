@@ -227,7 +227,7 @@ class Modules extends Component {
 
 	render(module) {
 		const { modules, isLoading } = this.state;
-		const { IsLoggedIn } = this.props;
+		const { IsloggedIn } = this.props;
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -255,11 +255,11 @@ class Modules extends Component {
 						Home
 					</Link>
 				</div>
-				{IsLoggedIn ? (
+				{IsloggedIn && (
 					<button className="new-add-module " onClick={this.toggleModal}>
 						Add module
 					</button>
-				) : null}
+				)}
 
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
@@ -273,20 +273,23 @@ class Modules extends Component {
 									<AccordionItem>
 										<AccordionItemTitle style={{ backgroundColor: this.state.bgColor }}>
 											<h3>{module.title}</h3>
-											<i onClick={this.toggleModal} className="far fa-edit" />
-											<i
-												onClick={() => {
-													this.handleDelete(module._id);
-												}}
-												className="far fa-trash-alt"
-											/>
-
-											<input
-												className="radio-btn"
-												type="checkbox"
-												onChange={this.handleChangeCheckBox}
-												defaultChecked={false}
-											/>
+											{IsloggedIn && <i onClick={this.toggleModal} className="far fa-edit" />}
+											{IsloggedIn && (
+												<i
+													onClick={() => {
+														this.handleDelete(module._id);
+													}}
+													className="far fa-trash-alt"
+												/>
+											)}
+											{IsloggedIn && (
+												<input
+													className="radio-btn"
+													type="checkbox"
+													onChange={this.handleChangeCheckBox}
+													defaultChecked={false}
+												/>
+											)}
 											<Modal
 												isOpen={this.state.isActive}
 												onRequestClose={this.toggleModal}
