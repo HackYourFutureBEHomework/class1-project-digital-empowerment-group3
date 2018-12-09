@@ -8,7 +8,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
-import 'react-accessible-accordion/dist/fancy-example.css';
 // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 
@@ -21,6 +20,7 @@ import { Link } from 'react-router-dom';
 // };
 
 class Modules extends Component {
+
 	state = {
 		title: '',
 		title2: '',
@@ -45,6 +45,7 @@ class Modules extends Component {
 		bgColor: 'dcd7dd',
 		value: [],
 		valueSearch: '',
+
 		modulesAreloading: true,
 		path: null
 	};
@@ -82,12 +83,12 @@ class Modules extends Component {
 
 	componentDidMount = () => {
 		const { pathId } = this.props.match.params;
-
 		getPath(pathId).then((path) => {
 			if (this.isUnmounted) {
 				return;
 			}
 			this.setState({ path, modules: path.modules, isLoading: false });
+
 		});
 	};
 	componentWillUnmount = () => {
@@ -143,7 +144,9 @@ class Modules extends Component {
 				explanation: 'explanation',
 				exercise: 'exercise',
 				evaluation: 'evaluation'
+
 			});
+
 		});
 	};
 
@@ -225,6 +228,16 @@ class Modules extends Component {
 		});
 	};
 
+	// onDragEnd = (result) => {
+	// 	if (!result.destination) {
+	// 		return;
+	// 	}
+	// 	const modules = reorder(this.state.modules, result.source.index, result.destination.index);
+	// 	this.setState({
+	// 		modules
+	// 	});
+	// };
+
 	render(module) {
 		const { modules, isLoading } = this.state;
 		const { IsloggedIn } = this.props;
@@ -246,7 +259,9 @@ class Modules extends Component {
 					<div className="ball ball-3" />
 				</div>
 			);
+
 		return (
+
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
@@ -255,6 +270,7 @@ class Modules extends Component {
 						Home
 					</Link>
 				</div>
+
 				{IsloggedIn && (
 					<button className="new-add-module " onClick={this.toggleModal}>
 						Add module
@@ -264,6 +280,7 @@ class Modules extends Component {
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
+
 					// let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
 						<div className="container mt-5">
@@ -533,7 +550,7 @@ class Modules extends Component {
 				</Modal>
 			</div>
 		);
-	}
+	};
 }
 
 export default Modules;
