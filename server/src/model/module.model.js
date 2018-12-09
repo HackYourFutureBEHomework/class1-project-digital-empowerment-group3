@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ModuleSchema = mongoose.Schema(
-<<<<<<< HEAD
+
 	{
 		title: {
 			type: String,
@@ -21,20 +21,5 @@ const ModuleSchema = mongoose.Schema(
 	{
 		timestamps: true
 	}
-=======
-  {
-    title: {
-      type: String,
-      required: true
-    },
-    explanation:string,
-    exercise:string,
-    evaluation:string,
-  },
-  {
-    timestamps: true
-  }
->>>>>>> refs/remotes/origin/mahmoudlb
-);
-
-module.exports = mongoose.model('Module', ModuleSchema);
+  );
+module.exports = mongoose.model('Module',ModuleSchema);
