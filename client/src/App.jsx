@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import Paths from './components/PathsHome';
 import Modules from './components/Modules';
 import Login from './components/Login';
 import Cookies from 'universal-cookie';
-
+import createBrowserHistory from 'history/createBrowserHistory';
+const history = createBrowserHistory();
 const cookies = new Cookies();
 class App extends Component {
 	constructor() {
@@ -24,7 +25,7 @@ class App extends Component {
 		const { loggedIn } = this.state;
 		console.log(loggedIn);
 		return (
-			<Router>
+			<Router history={history}>
 				<Switch>
 					<Route exact path="/login" render={() => <Login setLoggedInState={this.setLoggedInState} />} />
 					<Route exact path="/:path(|paths|path|index)" render={() => <Paths IsloggedIn={loggedIn} />} />

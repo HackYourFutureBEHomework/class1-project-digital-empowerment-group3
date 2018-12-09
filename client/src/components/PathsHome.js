@@ -103,8 +103,6 @@ class PathsHome extends Component {
 							placeholder="Search..."
 						/>
 
-						<Link to={'/login'}>hello</Link>
-
 						{IsloggedIn && (
 							<button className="new-add-module add-path" onClick={this.handleModal}>
 								Add path

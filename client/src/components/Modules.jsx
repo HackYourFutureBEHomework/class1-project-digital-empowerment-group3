@@ -264,7 +264,7 @@ class Modules extends Component {
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
-					let changeColor = isSuperActive ? 'red' : 'grey';
+					// let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
 						<div className="container mt-5">
 							<div key={module._id} />
