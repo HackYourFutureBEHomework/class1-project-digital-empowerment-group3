@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { logIn } from '../api/login';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
-import { browserHistory } from 'react-router';
 import Cookies from 'universal-cookie';
+import { withRouter } from 'react-router';
+import '../css/signin.css';
 
 const cookies = new Cookies();
 
@@ -24,30 +24,44 @@ class Login extends Component {
 			cookies.set('token', res.token);
 			return this.props.setLoggedInState();
 		});
+
+		history.push('/');
 	};
 
 	setField = (e) => {
 		this.setState({ [e.currentTarget.name]: e.currentTarget.value });
 	};
 	render() {
-		const { email, password, isLoading } = this.state;
+		const { email, password } = this.state;
 
 		return (
 			<div>
-				<form onSubmit={this.login}>
+				<form className="form-login" onSubmit={this.login}>
 					<label>
 						Email:
-						<input type="email" value={email} name="email" onChange={this.setField} />
+						<input
+							className=".form__input"
+							type="email"
+							value={email}
+							name="email"
+							onChange={this.setField}
+						/>
 					</label>
 					<label>
 						password:
-						<input type="password" value={password} name="password" onChange={this.setField} />
+						<input
+							className=".form__input"
+							type="password"
+							value={password}
+							name="password"
+							onChange={this.setField}
+						/>
 					</label>
-					<input type="submit" value="login" />
+					<input className=".form__button" type="submit" value="login" />
 				</form>
 			</div>
 		);
 	}
 }
 
-export default Login;
+export default withRouter(Login);
