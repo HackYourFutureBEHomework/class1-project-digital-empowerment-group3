@@ -7,8 +7,7 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion';
-// import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Accordion, AccordionItem, AccordionItemTitle, AccordionItemBody } from 'react-accessible-accordion'; // import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 
 // const reorder = (list, startIndex, endIndex) => {
@@ -20,7 +19,6 @@ import { Link } from 'react-router-dom';
 // };
 
 class Modules extends Component {
-
 	state = {
 		title: '',
 		title2: '',
@@ -83,12 +81,12 @@ class Modules extends Component {
 
 	componentDidMount = () => {
 		const { pathId } = this.props.match.params;
+
 		getPath(pathId).then((path) => {
 			if (this.isUnmounted) {
 				return;
 			}
 			this.setState({ path, modules: path.modules, isLoading: false });
-
 		});
 	};
 	componentWillUnmount = () => {
@@ -144,9 +142,7 @@ class Modules extends Component {
 				explanation: 'explanation',
 				exercise: 'exercise',
 				evaluation: 'evaluation'
-
 			});
-
 		});
 	};
 
@@ -240,7 +236,6 @@ class Modules extends Component {
 
 	render(module) {
 		const { modules, isLoading } = this.state;
-		const { IsloggedIn } = this.props;
 		const editorOptions = {
 			toolbar: [
 				[ { header: '1' }, { header: '2' } ],
@@ -261,7 +256,6 @@ class Modules extends Component {
 			);
 
 		return (
-
 			<div>
 				<div className="navbar navbar-default navbar-fixed-top">
 					{' '}
@@ -270,18 +264,14 @@ class Modules extends Component {
 						Home
 					</Link>
 				</div>
-
-				{IsloggedIn && (
-					<button className="new-add-module " onClick={this.toggleModal}>
-						Add module
-					</button>
-				)}
+				<button className="new-add-module " onClick={this.toggleModal}>
+					Add module
+				</button>
 
 				{modules.map((module) => {
 					const isSuperActive = module._id === this.state.selectedId;
 					const display = isSuperActive ? 'block' : 'none';
-
-					// let changeColor = isSuperActive ? 'red' : 'grey';
+					let changeColor = isSuperActive ? 'red' : 'grey';
 					return (
 						<div className="container mt-5">
 							<div key={module._id} />
@@ -290,23 +280,20 @@ class Modules extends Component {
 									<AccordionItem>
 										<AccordionItemTitle style={{ backgroundColor: this.state.bgColor }}>
 											<h3>{module.title}</h3>
-											{IsloggedIn && <i onClick={this.toggleModal} className="far fa-edit" />}
-											{IsloggedIn && (
-												<i
-													onClick={() => {
-														this.handleDelete(module._id);
-													}}
-													className="far fa-trash-alt"
-												/>
-											)}
-											{IsloggedIn && (
-												<input
-													className="radio-btn"
-													type="checkbox"
-													onChange={this.handleChangeCheckBox}
-													defaultChecked={false}
-												/>
-											)}
+											<i onClick={this.toggleModal} className="far fa-edit" />
+											<i
+												onClick={() => {
+													this.handleDelete(module._id);
+												}}
+												className="far fa-trash-alt"
+											/>
+
+											<input
+												className="radio-btn"
+												type="checkbox"
+												onChange={this.handleChangeCheckBox}
+												defaultChecked={false}
+											/>
 											<Modal
 												isOpen={this.state.isActive}
 												onRequestClose={this.toggleModal}
@@ -550,7 +537,7 @@ class Modules extends Component {
 				</Modal>
 			</div>
 		);
-	};
+	}
 }
 
 export default Modules;
